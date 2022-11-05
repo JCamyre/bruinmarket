@@ -1,5 +1,9 @@
 # BruinMarket
 
+## To make sure you are up-to-date with main branch
+
+Whenver you are working on your branch, run `git rebase main` to update your branch to main's.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
