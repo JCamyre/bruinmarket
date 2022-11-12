@@ -2,7 +2,9 @@
 
 ## To make sure you are up-to-date with main branch
 
-Whenver you are working on your branch, run `git rebase main` to update your branch to main's.
+Whenver you are working on your branch, run the following commands to update your branch to main's:
+1. `git fetch origin`
+2. `git rebase origin/main`
 
 # Getting Started with Create React App
 
