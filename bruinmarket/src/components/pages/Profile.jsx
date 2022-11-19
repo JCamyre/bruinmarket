@@ -1,11 +1,18 @@
 import React from "react";
-import {ChakraProvider, Center,  Button, ButtonGroup, Heading} from '@chakra-ui/react'
+import {ChakraProvider, Center,  Button, ButtonGroup, Heading, Image, Text, Container, VStack, StackDivider} from '@chakra-ui/react'
+import profilepic from '../blank-profile-picture-gd2ddd1954_1280.png'
 
 function Profile() {
   return (
     <ChakraProvider>
+        <Container maxW='container.md'>
+        <VStack spacing='24px' divider={<StackDivider borderColor='gray.200' />} >
+        <VStack>
         <Center>
-            <Heading>Your Name</Heading>
+            <Image borderRadius='full' boxSize='150px' src={profilepic} />
+        </Center>
+        <Center>
+            <Heading>Your Name {"\n"}</Heading>
         </Center>
         <Center>
             <ButtonGroup>
@@ -20,11 +27,14 @@ function Profile() {
                 </Button>
             </ButtonGroup>
         </Center>
-        <hr/>
+        </VStack>
+        <VStack>
         <Heading size = 'md'>About</Heading>
-        <Heading size = 'sm'>Joined BruinMarket in Year</Heading>
-        <hr/>
-        <Heading size = 'md'> Market Listings - Number</Heading>
+        <Text size = 'sm'>Joined BruinMarket in Year</Text>
+        </VStack>
+        <Heading size = 'md'> Market Listings - #</Heading>
+        </VStack>
+        </Container>
     </ChakraProvider>
   );
 }
