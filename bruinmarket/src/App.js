@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
+import Login from "./components/pages/Login.jsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/allposts" element={<AllPosts />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
