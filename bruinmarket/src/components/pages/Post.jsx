@@ -2,13 +2,13 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { Container, Box, Center, Img } from "@chakra-ui/react";
+import { Container, Box, Center, Img, Text, Button, HStack, Heading } from "@chakra-ui/react";
 
 function Post() {
   const { id } = useParams();
   return (
-    <Container display="flex" maxW="2xl">
-      <Box w="80%">
+    <Container display="flex" maxW="container.lg">
+      <Box w="75%">
         <Carousel showArrows={true} infiniteLoop={true} showIndicators={false}>
           <div>
             <Img src="https://imgs.search.brave.com/iDWBRAOg5OxWbGv_P4lkcXBZQ6__WvX4XEljLG9FP_A/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9zYmx5/LXdlYi1wcm9kLXNo/YXJlYWJseS5uZXRk/bmEtc3NsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyMC8w/Ny8xNTIwNTMxOC9z/aWQtYmFsYWNoYW5k/cmFuLV85YS0zTk81/S0pFLXVuc3BsYXNo/LmpwZw" />
@@ -24,8 +24,19 @@ function Post() {
           </div>
         </Carousel>
       </Box>
-      <Box w="20%">
-        <Center>Post {id}</Center>
+      {/* When to use box vs stack */}
+      <Box w="25%">
+        <Text fontSize='2xl'>1994 Honda Civic</Text>
+        <Text fontSize='lg'>$0</Text>
+        <Text fontSize='sm'>Listed a day ago in Sacramento, CA</Text>
+        <HStack>
+          <Button>Message</Button>
+          <Button>Yo</Button>
+          <Button>Yo2</Button>
+        </HStack>
+        <Heading size='md'>
+        Details
+        </Heading>
       </Box>
     </Container>
   );
