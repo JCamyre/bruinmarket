@@ -11,7 +11,12 @@ function Login() {
   function Submit(e) {
     e.preventDefault();
     console.log(`Email: ${email}, Password: ${password}`);
-    // need to redirect to / page
+
+    // insert call to database to verify email and password
+
+    // if user authenticated, get whatever information we need related to their information
+    // and reroute to home page
+
     navigate("/");
   }
 
