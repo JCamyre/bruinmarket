@@ -15,9 +15,14 @@ function Login() {
     // insert call to database to verify email and password
 
     // if user authenticated, get whatever information we need related to their information
-    // and reroute to home page
 
-    navigate("/");
+    // reroute to home page if authenticated
+    // otherwise don't change page and show some error
+    if (true) {
+      navigate("/");
+    } else {
+      console.log("BAD");
+    }
   }
 
   return (
