@@ -77,6 +77,7 @@ function CreatePost() {
             type="file"
             placeholder="filename"
             multiple
+            accept="image/png, image/jpg, image/jpeg"
             onChange={(e) => uploadPicture(e.currentTarget.files)}
           />
           <Button type="submit" maxW="sm">
