@@ -5,6 +5,7 @@ import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import TempRegister from "./components/pages/TempRegister.jsx"
 import { ChakraProvider } from "@chakra-ui/react";
+import Login from "./components/pages/Login.jsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/allposts" element={<AllPosts />} />
           <Route path="/testregister" element={<TempRegister />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
