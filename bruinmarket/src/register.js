@@ -3,7 +3,7 @@ import {app, auth, database, authentication, firestore} from "./firebase"
 const register = async (username, email, password, setStatus) => //returns false if registration is in valid (e.g. if account already exists)
 {
     try {
-        const result = await authentication.createUserWithEmailAndPassword(auth, email, password);
+        const result = await authentication.createUserWithEmailAndPassword(auth, email, password)
         const newUser = result.user
         // const checkQuery = firestore.query(firestore.collection(database, "users"), firestore.where("username", "==", username))
         // const existingUser = await firestore.getDocs(checkQuery) //check if user already exists

@@ -3,6 +3,7 @@ import * as authentication from "firebase/auth"
 import * as firestore from  "firebase/firestore"
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// TODO: add firebaseConfig fields to .env instead of hardcoding them 
 const firebaseConfig = {
     apiKey: "AIzaSyBCCQ4AhObIjdEv1OMfx9pbUqGcEKsNkd8",
     authDomain: "bruinmarket-cc504.firebaseapp.com",
