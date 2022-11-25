@@ -1,5 +1,13 @@
 # BruinMarket
 
+## To make sure you are up-to-date with main branch
+
+Whenver you are working on your branch, run the following commands to update your branch to main's:
+1. `git fetch origin`
+2. `git rebase origin/main`
+
+Test: Just `git pull origin`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
