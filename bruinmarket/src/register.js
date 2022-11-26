@@ -1,6 +1,6 @@
-import {app, auth, database, authentication, firestore} from "./firebase"
+import {auth, database, authentication, firestore} from "./firebase"
 
-const register = async (username, email, password, setStatus) => //returns false if registration is in valid (e.g. if account already exists)
+const register = async (username, email, password) => //returns false if registration is in valid (e.g. if account already exists)
 {
     try {
         const result = await authentication.createUserWithEmailAndPassword(auth, email, password)
@@ -14,7 +14,7 @@ const register = async (username, email, password, setStatus) => //returns false
                     username,
                     authProvider: "local",
                     email
-            }).then(() => {setStatus(0)})
+            }).then(() => {return 0})
         // } else {
         //     return false
         // }
@@ -22,19 +22,15 @@ const register = async (username, email, password, setStatus) => //returns false
         console.log(e.code)
         switch (e.code) {
             case 'auth/email-already-in-use':
-                setStatus(1)
-                break
+                return 1
             case 'auth/invalid-email':
-                setStatus(2)
-                break
+                return 2
             case 'auth/operation-not-allowed':
-                setStatus(3)
-                break
+                return 3
             case 'auth/weak-password':
-                setStatus(4)
-                break
+                return 4
             default:
-                setStatus(5)
+                return 5
         }
 
     }

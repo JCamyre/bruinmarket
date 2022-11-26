@@ -21,16 +21,20 @@ function Registration() {
         console.log(`Email: ${email}, Password: ${password}`);
     
         // insert call to database to verify email and password
-        const registerResult = await register(username, email, password, setStatus)
+        const registerResult = await register(username, email, password)
         let loginResult = null
         if (!registerResult) {
-            loginResult = await login(email, password);
+            loginResult = await login(email, password)
         }
+        setStatus(registerResult);
         setSubmittedEmail(email);
         // if user authenticated, get whatever information we need related to their information
     
         // reroute to home page if authenticated
         // otherwise don't change page and show some error
+        if (registerResult) {
+            return
+        }
         if (!loginResult) {
           navigate("/");
         } else {
