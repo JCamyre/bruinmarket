@@ -2,6 +2,9 @@ import {auth, database, authentication, firestore} from "./firebase"
 
 const register = async (username, email, password) => //returns false if registration is in valid (e.g. if account already exists)
 {
+    if (!(email.endsWith("@g.ucla.edu") /*|| email.endsWith("@ucla.edu")*/)) {
+        return -1
+    }
     try {
         const result = await authentication.createUserWithEmailAndPassword(auth, email, password)
         const newUser = result.user

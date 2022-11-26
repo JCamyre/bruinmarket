@@ -46,6 +46,8 @@ function Registration() {
     {
         console.log(status)
         switch (status) {
+            case -1:
+                return `Email must be under domain "g.ucla.edu"`
             case 0:
                 return `Successfully registered ${submittedEmail}`
             case 1:
