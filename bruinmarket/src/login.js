@@ -1,6 +1,6 @@
-import {app, auth, database, authentication, firestore} from "./firebase"
+import {auth, authentication} from "./firebase"
 
-const login = async (email, password, setStatus) => {
+const login = async (email, password) => {
     try {
         await authentication.signInWithEmailAndPassword(auth, email, password).then(() => {return 0})
     } catch(e) {

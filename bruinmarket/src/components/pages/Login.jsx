@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Container, Input, Stack, Link, Text} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import login from "../../login" 
-import { useEffect } from "react";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -34,7 +33,7 @@ function Login() {
     console.log(`Email: ${email}, Password: ${password}`);
 
     // insert call to database to verify email and password
-    const loginResult = await login(email, password, setStatus);
+    const loginResult = await login(email, password);
     // if user authenticated, get whatever information we need related to their information
 
     // reroute to home page if authenticated

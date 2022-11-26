@@ -24,7 +24,7 @@ function Registration() {
         const registerResult = await register(username, email, password, setStatus)
         let loginResult = null
         if (!registerResult) {
-            loginResult = await login(email, password, setStatus);
+            loginResult = await login(email, password);
         }
         setSubmittedEmail(email);
         // if user authenticated, get whatever information we need related to their information
