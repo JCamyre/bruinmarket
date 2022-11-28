@@ -18,10 +18,14 @@ function Home() {
 
   return (
     <>
-      <div>
+      <div class="homepage">
         <Center>
           <Heading>HomePage</Heading>
+        </Center>
+      </div>
 
+      <div class="button-wrapper">
+        <Center>
           <Button colorScheme='blue'
           onClick={() => {
             setgoToAllPosts(true);
