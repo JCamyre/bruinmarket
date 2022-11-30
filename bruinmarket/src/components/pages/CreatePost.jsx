@@ -2,6 +2,8 @@ import {
   Container,
   Stack,
   Input,
+  InputGroup,
+  InputLeftElement,
   Link,
   Button,
   FormControl,
@@ -23,9 +25,13 @@ function CreatePost() {
   const [category, setCategory] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
+  const format = (val) => `$` + val
+  const parse = (val) => val.replace(/^\$/, '')
+
+  const [price, setPrice] = React.useState('5.50')
 
   const navigate = useNavigate();
-  const userData = React.useContext(AuthContext)
+  const userData = React.useContext(AuthContext);
   async function Submit(e) {
     e.preventDefault();
     console.log();
@@ -34,19 +40,23 @@ function CreatePost() {
 
     // Maybe we'll add a check to check for duplicate posts, but for now, just push to the Post table
     // WE NEED TO ADD A DATABASE CALL THAT RETURNS THE ID OF THE CURRENT USER LOGGED IN
-
     if(userData == null){
       console.log("UserData is null u messed up")
+    }
+    if(summary == "" || title == "" || category == ""){
+      return;
     }
     const docRef = await addDoc(collection(database, "posts"), {
       uid: userData.uid,
       title: title,
       summary: summary,
-      category: category
+      category: category,
+      price: price
     });
     
     // database.post(user_id, title, summary, category)
-    uploadPicture(e.target[3].files, docRef.id)
+    console.log(e.target)
+    uploadPicture(e.target[4].files, docRef.id)
 
     // pictures we will figure out.
 
@@ -113,6 +123,20 @@ function CreatePost() {
               <option>Books</option>
             </Select>
           </FormControl>
+          
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents='none'
+              color='gray.300'
+              fontSize='1.2em'
+              children='$'
+            />
+            <Input 
+              placeholder="Enter price"
+              onChange={(e) => setPrice(e.currentTarget.value)}
+            />
+          </InputGroup>
+      
           <Input
             type="file"
             placeholder="filename"
