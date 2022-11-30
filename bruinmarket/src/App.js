@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import Register from "./components/pages/Register.jsx";
+import Profile from "./components/pages/Profile";
 import TempRegister from "./components/pages/TempRegister.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
@@ -68,6 +69,7 @@ function App() {
                 >
                   <Route path="/" element={<Home />} />
                   <Route path="/allposts" element={<AllPosts />} />
+                  <Route path={`/profile/${userUID}`} element={<Profile />} />
                 </Route>
                 <Route
                   element={
