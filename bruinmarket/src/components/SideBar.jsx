@@ -11,7 +11,7 @@ import {
     Stack
   } from '@chakra-ui/react'
 
-function SideBar() {
+function SideBar({setCategory}) {
     const [currOpen, setOpen] = React.useState(false)
 
     return (
@@ -23,12 +23,15 @@ function SideBar() {
                     <DrawerHeader borderBottomWidth='1px'>Categories</DrawerHeader>
                     <DrawerBody>
                         <Stack>
-                            <Button>Vehicles</Button>
-                            <Button>Property Rentals</Button>
-                            <Button>Apparel</Button>
-                            <Button>Classifieds</Button>
-                            <Button>Electronics</Button>
-                            <Button>More Categories</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("Books");}}>Books</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("Cars");}}>Cars</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("clothes");}}>Clothes</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("electronics");}}>Electronics</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("housing");}}>Housing</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("music");}}>Music</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("sporting");}}>Sporting</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("toys");}}>Toys</Button>
+                            <Button onClick={() => {setOpen(false); setCategory("miscellaneous");}}>Miscellaneous</Button>
                         </Stack>
                     </DrawerBody>   
                 </DrawerContent>
