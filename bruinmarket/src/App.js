@@ -42,13 +42,13 @@ function App() {
       let data = null;
       docs.forEach((doc) => {
         // console.log(doc.data().username)
-        data = doc.data();
-      });
-      console.log(data);
-      setData(data);
+        data = doc.data()
+      })
+      console.log(data)
+      return data
     }
     if (userUID) {
-      getUserData(userUID);
+      getUserData(userUID).then(data => setData(data))
     }
   }, [userUID]);
   return (
