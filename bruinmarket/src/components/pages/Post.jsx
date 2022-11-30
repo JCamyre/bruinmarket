@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -11,13 +11,19 @@ import {
   Button,
   HStack,
   Heading,
+  Link,
 } from "@chakra-ui/react";
+import "./Post.css";
 
 function Post() {
   const { id } = useParams();
+  // get User based on the Post id
+
+  const [user, setUser] = useState({ uid: "1324320983201fdasdsafdjaf" });
+
   return (
     <Container display="flex" maxW="container.lg">
-      <Box w="75%">
+      <Box w="60%">
         <Carousel
           showArrows={true}
           infiniteLoop={true}
@@ -39,21 +45,25 @@ function Post() {
         </Carousel>
       </Box>
       {/* When to use box vs stack */}
-      <Box w="25%" pl="4">
+      <Box w="40%" pl="4">
         <Text fontSize="2xl">1994 Honda Civic</Text>
         <Text fontSize="lg">$0</Text>
         <Text fontSize="sm">Listed a day ago in Sacramento, CA</Text>
-        <HStack>
-          <Button>Message</Button>
-          <Button>Yo</Button>
-          <Button>Yo2</Button>
-        </HStack>
+
         <Heading size="md">Details</Heading>
         <Heading size="xs">Condition - New</Heading>
         <Text fontSize="md">Description</Text>
+        <Text fontSize="md">
+          BLHABLABHLABHABHLABHALBHB fdasklfdjasfdsaklfdsaklvkladsv
+        </Text>
         {/* If we have to use a location thing, try this: https://www.openstreetmap.org/copyright */}
         <hr />
         <Heading size="md">Seller Information</Heading>
+        <HStack>
+          <a href={`profile/${user.uid}`}>
+            <Button>View Profile</Button>
+          </a>
+        </HStack>
         {/* https://openbase.com/js/react-star-ratings */}
         <Text fontSize="lg">&#9733;&#9733;&#9733;&#9733;&#9733;</Text>
       </Box>
