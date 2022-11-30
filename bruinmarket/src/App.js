@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import Post from "./components/pages/Post.jsx";
+import Map from "./components/pages/Map.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/allposts" element={<AllPosts />} />
           <Route path="/post/:id" element={<Post />} />
+          <Route path="/map" element={<Map />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
