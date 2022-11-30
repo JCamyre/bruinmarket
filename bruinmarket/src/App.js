@@ -5,6 +5,7 @@ import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import TempRegister from "./components/pages/TempRegister.jsx"
 import { ChakraProvider } from "@chakra-ui/react";
+import Navbar from "./components/Navbar";
 import Login from "./components/pages/Login.jsx";
 import ProtectedRoute from "./utilities/ProtectedRoute"
 import { auth, firestore, database } from "./firebase"
@@ -47,7 +48,9 @@ function App() {
   }, [userUID])
   return (
     <ChakraProvider>
+
       <AuthContext.Provider value={userData}>
+            <Navbar />
         <BrowserRouter>
           <Routes>
             {loggedIn === -1 ? null :
