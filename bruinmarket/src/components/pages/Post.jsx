@@ -9,20 +9,39 @@ import {
   Img,
   Text,
   Button,
-  HStack,
+  VStack,
   Heading,
   Link,
+  Spacer,
 } from "@chakra-ui/react";
 import "./Post.css";
 
 function Post() {
   const { id } = useParams();
   // get User based on the Post id
-
-  const [user, setUser] = useState({ uid: "1324320983201fdasdsafdjaf" });
+  const [post, setPost] = useState({
+    uid: "1324320983201fdasdsafdjaf",
+    title: "1994 Honda Civic",
+    price: "$1000",
+    summary:
+      "fdkasfkldjasfkldsakldsajfdsajfkdsajfsdafdsakfjdlsafdsafdsafkdsafadsfdasfdasfdlf",
+  });
+  const [user, setUser] = useState({
+    uid: "1324320983201fdasdsafdjaf",
+    username: "pandalover69",
+  });
 
   return (
-    <Container display="flex" maxW="container.lg">
+    <Container
+      display="flex"
+      maxW="container.xl"
+      // bg="#eee"
+      bg="purple.300"
+      borderRadius="16"
+      p="8"
+      mt="4"
+      boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
+    >
       <Box w="60%">
         <Carousel
           showArrows={true}
@@ -44,26 +63,25 @@ function Post() {
           </div>
         </Carousel>
       </Box>
-      {/* When to use box vs stack */}
-      <Box w="40%" pl="4">
-        <Text fontSize="2xl">1994 Honda Civic</Text>
-        <Text fontSize="lg">$0</Text>
+      <Spacer />
+      <Box w="35%" pl="4" color="white">
+        <Text fontSize="2xl">{post.title}</Text>
+        <Text fontSize="lg">{post.price}</Text>
         <Text fontSize="sm">Listed a day ago in Sacramento, CA</Text>
 
         <Heading size="md">Details</Heading>
         <Heading size="xs">Condition - New</Heading>
         <Text fontSize="md">Description</Text>
-        <Text fontSize="md">
-          BLHABLABHLABHABHLABHALBHB fdasklfdjasfdsaklfdsaklvkladsv
-        </Text>
+        <Text fontSize="md">{post.summary}</Text>
         {/* If we have to use a location thing, try this: https://www.openstreetmap.org/copyright */}
         <hr />
         <Heading size="md">Seller Information</Heading>
-        <HStack>
+        <VStack display="flex" justifyContent={"left"}>
+          <Text fontSize="xl">{user.username}</Text>
           <a href={`profile/${user.uid}`}>
             <Button>View Profile</Button>
           </a>
-        </HStack>
+        </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
         <Text fontSize="lg">&#9733;&#9733;&#9733;&#9733;&#9733;</Text>
       </Box>

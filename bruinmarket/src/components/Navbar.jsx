@@ -16,6 +16,7 @@ import logout from "../logout";
 function Navbar() {
   const userData = React.useContext(AuthContext);
   const username = userData ? userData.username : "";
+  // const [uid, setUid] = useState("");
   const uid = userData ? userData.uid : "";
   const [profilePic, setProfilePic] = useState(
     "https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"

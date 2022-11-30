@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import getCategoryPosts from "../../utilities/Posts";
 
 function Home() {
-
   const navigate = useNavigate();
   const userData = React.useContext(AuthContext);
   const [category, setCategory] = React.useState(null);
@@ -27,7 +26,6 @@ function Home() {
   // console.log(userData.username)
   return (
     <>
-      <div>Home</div>
       {/* <div>Logged in as {userData?.username}</div> */}
       {/* <Button
         onClick={() => {
