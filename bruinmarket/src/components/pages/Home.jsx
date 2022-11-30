@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import getCategoryPosts from "../../utilities/Posts";
 
 function Home() {
+
   const navigate = useNavigate();
   const userData = React.useContext(AuthContext);
   const [category, setCategory] = React.useState(null);

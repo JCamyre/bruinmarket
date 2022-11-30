@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
+import Post from "./components/pages/Post.jsx";
 import Register from "./components/pages/Register.jsx";
 import Profile from "./components/pages/Profile";
 import TempRegister from "./components/pages/TempRegister.jsx";
@@ -70,6 +71,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/allposts" element={<AllPosts />} />
                   <Route path={`/profile/:uid`} element={<Profile />} />
+                  <Route path="/post/:id" element={<Post />} />
                 </Route>
                 <Route
                   element={
