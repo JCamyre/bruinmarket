@@ -40,10 +40,10 @@ function App() {
         data = doc.data()
       })
       console.log(data)
-      setData(data)
+      return data
     }
     if (userUID) {
-      getUserData(userUID)
+      getUserData(userUID).then(data => setData(data))
     }
   }, [userUID])
   return (

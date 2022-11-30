@@ -16,7 +16,7 @@ function Navbar() {
         <Heading size="xl">BruinMarket</Heading>
       </Box>
       <Spacer />
-      <Link href="/allposts">
+      <Link href="/">
         <Image
           borderRadius="full"
           boxSize="100px"
