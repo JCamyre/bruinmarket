@@ -62,7 +62,7 @@ function Login() {
               <Button type="submit">Sign in</Button>
             </Link>
 
-            <Link href="/testregister">Don't have an account, register here!</Link>
+            <Link href="/register">Don't have an account, register here!</Link>
 
             <Text color="red"> {getStatusMessage(loginStatus)} </Text>
 

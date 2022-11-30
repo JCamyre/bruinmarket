@@ -3,7 +3,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
-import TempRegister from "./components/pages/TempRegister.jsx";
+import Register from "./components/pages/Register.jsx"
+import TempRegister from "./components/pages/TempRegister.jsx"
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Login from "./components/pages/Login.jsx";
@@ -77,6 +78,7 @@ function App() {
                   }
                 >
                   <Route path="/testregister" element={<TempRegister />} />
+                  // Add <Route path='/register' /> here
                   <Route path="/login" element={<Login />} />
                 </Route>
               </>
