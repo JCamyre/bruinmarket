@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import StarRatings from "react-star-ratings";
 
-function Stars() {
+function Stars({ uid }) {
   const [stars, setStars] = useState(3.78);
   const [totalReviews, setTotalReviews] = useState(6);
 
@@ -9,7 +9,9 @@ function Stars() {
     //setTotalReviews(totalReviews + 1);
     setStars((stars * totalReviews + newRating) / (totalReviews + 1));
     setTotalReviews(totalReviews + 1);
-    console.log(stars, totalReviews);
+    console.log(stars, totalReviews, uid);
+
+    // Update User's total reviews and newRating with this uid
   }
 
   return (
