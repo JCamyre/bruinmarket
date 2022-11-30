@@ -3,6 +3,7 @@ import { AuthContext } from '../../App'
 import { Button } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom";
 import logout from "../../logout"
+import Stars from "../Stars";
 
 function Home() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Home() {
           navigate("/login")
         }
       }}>Logout</Button>
+      <Stars /> 
     </>
   );
 }
