@@ -27,8 +27,8 @@ function Home() {
   return (
     <>
       <div>Home</div>
-      <div>Logged in as {userData?.username}</div>
-      <Button
+      {/* <div>Logged in as {userData?.username}</div> */}
+      {/* <Button
         onClick={() => {
           if (logout()) {
             navigate("/login");
@@ -36,9 +36,9 @@ function Home() {
         }}
       >
         Logout
-      </Button>
+      </Button> */}
       <SideBar setCategory={setCategory} />
-      <Text>{JSON.stringify(currPosts)}</Text>
+      {/* <Text>{JSON.stringify(currPosts)}</Text> */}
     </>
   );
 }
