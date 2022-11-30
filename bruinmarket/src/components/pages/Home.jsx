@@ -1,10 +1,10 @@
 import React from "react";
+
 import {Navigate} from "react-router-dom";
 import { Button, ButtonGroup } from '@chakra-ui/react'
-import { Center, Square, Circle } from '@chakra-ui/react'
-import { Heading } from '@chakra-ui/react'
-import { Image } from '@chakra-ui/react'
-import { Stack, HStack, VStack } from '@chakra-ui/react'
+import { Center, Square, Circle, Box, Text } from '@chakra-ui/react'
+import { Heading, Image } from '@chakra-ui/react'
+import { Stack, HStack, VStack, Flex, Spacer } from '@chakra-ui/react'
 
 
 
@@ -69,8 +69,56 @@ function Home() {
             src='https://img2.carmax.com/assets/22970819/hero.jpg?width=400'
             alt='Car 4'
           />
-          <Image boxSize='200px' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
         </Stack>
+      </div>
+      <div>
+        <Stack direction='row' spacing='200px'>
+          <Box maxW='32rem'>
+            <Heading mb={2} size='l'>
+              $input_price <br></br>
+              input_itemname
+            </Heading>
+            <Text fontSize='m'>
+              input_location
+              <br></br>
+              input_description
+            </Text>
+            <Button size='md' colorScheme='green' mt='12px'>
+              View item
+            </Button>
+          </Box>
+
+          <Box maxW='32rem'>
+            <Heading mb={2} size='l'>
+              $input_price <br></br>
+              input_itemname
+            </Heading>
+            <Text fontSize='l'>
+              input_location
+              <br></br>
+              input_description
+            </Text>
+            <Button size='md' colorScheme='green' mt='12px'>
+              View item
+            </Button>
+          </Box>
+
+          <Box maxW='32rem'>
+            <Heading mb={2} size='l'>
+              $input_price <br></br>
+              input_itemname
+            </Heading>
+            <Text fontSize='l'>
+              input_location
+              <br></br>
+              input_description
+            </Text>
+            <Button size='md' colorScheme='green' mt='12px'>
+              View item
+            </Button>
+          </Box>
+        </Stack>
+        
       </div>
   </>
   )

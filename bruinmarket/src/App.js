@@ -1,27 +1,37 @@
 import "./App.css";
-import React, {useState, useRef, useCallback, useEffect, Fragment} from "react";
+import React, {useState, useRef, useCallback, useEffect, Fragment, Component} from "react";
+import useFetch from "./hooks/useFetch";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
+import axios from 'axios'
+// import FetchImages from "./components/pages/FetchImages";
 
-import useFetch from "./hooks/useFetch";
+import firebase from './firebase'
+import '@firebase/auth'
 
-// import axios from 'axios'
+
+// ARRAY OF ITEMS - TEST
+let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
+let itemList=items.map((item,index)=>{
+  return <li key={index}>{item}</li>
+})
+
+// function Image(props) {
+//   return (
+//     <picture>
+//       <source media="(min-width:465px)" src='https://img2.carmax.com/assets/22970819/hero.jpg?width=400'></source>
+//       <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;"></img>
+//         {props.value}
+//   </picture>
+//   );
+// }
+
 
 
 function App() {
-  // const [images, setImages] = useState([]);
-  // useEffect(() => {
-  //   const apiRoot = "https://api.unsplash.com";
-  //   // const accessKey = process.env.REACT_APP_ACCESSKEY;
-
-  //   axios
-  //     .get(`${apiRoot}/photos/random?client_id=h2EK8-VUWvB1kullrkmqRmW03DEGRVt61Avqesvuu1Y&count=10`)
-  //     .then(res => setImages([...images, ...res.data]))
-  //     // .then(res => console.log(res.data))
-  // }, [])
-
+  const [posts, setPosts] = useState([])
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const { loading, error, list } = useFetch(query, page);
@@ -30,6 +40,25 @@ function App() {
     setQuery(e.target.value);
   };
 
+  // FIREBASE - FETCH POSTS
+  const ref = firebase.firestore().collection("posts");
+  console.log(ref);
+
+  function getPostsFromFirebase() {
+    ref.onSnapshot((querySnapshot) => {
+      const items = [];
+      querySnapshot.forEach((doc) => {
+        items.push(doc.data());
+      });
+      setPosts(items);
+    });
+  }
+
+  useEffect(() => {
+    getPostsFromFirebase();
+  }, []);
+
+  // HANDLE INFINITE SCROLLING
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     if (target.isIntersecting) {
@@ -49,6 +78,16 @@ function App() {
 
   return (
     <>
+      <div className="FirebasePosts">
+        {posts.map((post) => (
+          <div key={post.id}>
+            <picture>{post.image}</picture>
+            <p>{post.title}</p>
+          </div>
+        ))}
+      </div>
+
+
       <div className="App">
         <input type="text" value={query} onChange={handleChange} />
         <div>
@@ -69,6 +108,13 @@ function App() {
           </Routes>
         </BrowserRouter>
       </ChakraProvider>
+
+      <div>
+        <h2>This is a simple list of items</h2>
+        <ul>
+          {itemList}
+        </ul>
+      </div>
     </>
   );
 }
