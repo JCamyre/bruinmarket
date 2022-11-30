@@ -10,6 +10,7 @@ import {
   Container,
   VStack,
   StackDivider,
+  Box,
 } from "@chakra-ui/react";
 import profilepic from "../blank-profile-picture-gd2ddd1954_1280.png";
 import { AuthContext } from "../../App";
@@ -17,12 +18,14 @@ import { useParams } from "react-router-dom";
 import { database, firestore } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { stringify } from "@firebase/util";
 
 function Profile() {
   const { uid } = useParams();
   // To get info for current user,
 
   const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
     async function getUser() {
       const query = await firestore.query(
@@ -37,10 +40,26 @@ function Profile() {
       setUser(user);
     }
     getUser();
+
+    // ADD THE CODE TO RETRIEVE ALL POSTS ASSOCIATED WITH THEM
+    async function getUserPosts() {
+      const query = await firestore.query(
+        firestore.collection(database, "posts"),
+        firestore.where("uid", "==", uid)
+      );
+      const docs = await firestore.getDocs(query);
+      const posts = [];
+      docs.forEach((doc) => {
+        console.log(doc);
+        posts.push(doc.data());
+      });
+      setPosts(posts);
+    }
+    getUserPosts();
   }, [uid]);
 
   // const userData = useContext(AuthContext);
-  console.log(user);
+  console.log(posts);
   const username = user ? user.username : "";
   // const username = userData ? userData.username : "User";
 
@@ -74,6 +93,15 @@ function Profile() {
             <Text size="sm">Joined BruinMarket in Year</Text>
           </VStack>
           <Heading size="md"> Market Listings - #</Heading>
+          <Heading>
+            {posts.map((post) => (
+              <Box>
+                <Text>{post.title}</Text>
+                <Text>{post.summary}</Text>
+                <Text>{post.category}</Text>
+              </Box>
+            ))}
+          </Heading>
         </VStack>
       </Container>
     </ChakraProvider>
