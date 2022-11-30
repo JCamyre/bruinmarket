@@ -56,6 +56,7 @@ function App() {
                 <Route element={<ProtectedRoute allowed={loggedIn===1} alternateRoute="/login" />} >
                   <Route path="/" element={<Home />} />
                   <Route path="/allposts" element={<AllPosts />} />
+                  <Route path="/createpost" element={<CreatePost />} />
                 </Route>              
                 <Route element={<ProtectedRoute allowed={loggedIn===0} alternateRoute="/" />} >
                   <Route path="/testregister" element={<TempRegister />} />
