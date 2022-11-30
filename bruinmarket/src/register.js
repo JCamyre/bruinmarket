@@ -16,7 +16,9 @@ const register = async (username, email, password) => //returns false if registr
                     uid: newUser.uid,
                     username,
                     authProvider: "local",
-                    email
+                    email,
+                    numReviews: 0,
+                    rating: 5
             }).then(() => {return 0})
         // } else {
         //     return false
