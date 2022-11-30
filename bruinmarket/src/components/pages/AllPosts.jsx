@@ -1,7 +1,12 @@
 import React from "react";
+import SideBar from '../SideBar'
 
 function AllPosts() {
-  return <div>AllPosts</div>;
+  return (
+  <>
+    <SideBar/>
+  </>
+  );
 }
 
 export default AllPosts;
