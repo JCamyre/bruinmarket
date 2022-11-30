@@ -11,11 +11,17 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { storage } from './../../firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {db} from "./../../firebase"
+import { getFireStore, collection, addDoc } from "firebase/firestore"; 
 
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [category, setCategory] = useState("");
+  const [imgUrl, setImgUrl] = useState(null);
+  const [progresspercent, setProgresspercent] = useState(0);
 
   const navigate = useNavigate();
 
@@ -28,6 +34,17 @@ function CreatePost() {
     // WE NEED TO ADD A DATABASE CALL THAT RETURNS THE ID OF THE CURRENT USER LOGGED IN
 
     // database.post(user_id, title, summary, category)
+    db.collection("cities").add({
+      name: "Tokyo",
+      country: "Japan"
+    })
+    .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+   })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+   });
+      uploadPicture(e.currentTarget.files)
 
     // pictures we will figure out.
 
@@ -46,6 +63,27 @@ function CreatePost() {
     imgsArr.forEach((img, i) => {
       // FOR EACH IMAGE, UPLOAD THE FILE TO FIREBASE, WITH THE OUR WACKY NAMING SYSTEM
       // POSTID + _ + PICTURE NUMBER (use the i variable for PICTURE NUMBER)
+      const file = img;
+      if (!file) return;
+      const storageRef = ref(storage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+  
+      uploadTask.on("state_changed",
+        (snapshot) => {
+          const progress =
+            Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          setProgresspercent(progress);
+        },
+        (error) => {
+          alert(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgUrl(downloadURL)
+          });
+        }
+      );
+  
       console.log(img, i);
     });
   }
@@ -78,7 +116,6 @@ function CreatePost() {
             placeholder="filename"
             multiple
             accept="image/png, image/jpg, image/jpeg"
-            onChange={(e) => uploadPicture(e.currentTarget.files)}
           />
           <Button type="submit" maxW="sm">
             Post!
