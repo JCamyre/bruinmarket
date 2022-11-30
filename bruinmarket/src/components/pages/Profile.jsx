@@ -13,11 +13,36 @@ import {
 } from "@chakra-ui/react";
 import profilepic from "../blank-profile-picture-gd2ddd1954_1280.png";
 import { AuthContext } from "../../App";
+import { useParams } from "react-router-dom";
+import { database, firestore } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 function Profile() {
-  const userData = useContext(AuthContext);
-  console.log(userData);
-  const username = userData ? userData.username : "User";
+  const { uid } = useParams();
+  // To get info for current user,
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    async function getUser() {
+      const query = await firestore.query(
+        firestore.collection(database, "users"),
+        firestore.where("uid", "==", uid)
+      );
+      const docs = await firestore.getDocs(query);
+      let user = "";
+      docs.forEach((doc) => {
+        user = doc.data();
+      });
+      setUser(user);
+    }
+    getUser();
+  }, [uid]);
+
+  // const userData = useContext(AuthContext);
+  console.log(user);
+  const username = user ? user.username : "";
+  // const username = userData ? userData.username : "User";
 
   return (
     <ChakraProvider>

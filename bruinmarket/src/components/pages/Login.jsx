@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Container, Input, Stack, Link, Text} from "@chakra-ui/react";
+import { Button, Container, Input, Stack, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import login from "../../login" 
+import login from "../../login";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,23 +10,22 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const getStatusMessage = (status) =>
-  {
-      console.log(status)
-      switch (status) {
-          case 0:
-              return `Logging in ...`
-          case 1:
-              return `The user associated with the entered email has been disabled`
-          case 2:
-              return `The email address entered is invalid`
-          case 3:
-          case 4:
-              return `Email or password is incorrect. Please try again`
-          default:
-              return ``
-      }
-  }
+  const getStatusMessage = (status) => {
+    console.log(status);
+    switch (status) {
+      case 0:
+        return `Logging in ...`;
+      case 1:
+        return `The user associated with the entered email has been disabled`;
+      case 2:
+        return `The email address entered is invalid`;
+      case 3:
+      case 4:
+        return `Email or password is incorrect. Please try again`;
+      default:
+        return ``;
+    }
+  };
 
   async function Submit(e) {
     e.preventDefault();
@@ -41,7 +40,7 @@ function Login() {
     if (!loginResult) {
       navigate("/");
     } else {
-      setStatus(loginResult)
+      setStatus(loginResult);
     }
   }
 
@@ -62,10 +61,11 @@ function Login() {
               <Button type="submit">Sign in</Button>
             </Link>
 
-            <Link href="/register">Don't have an account, register here!</Link>
+            <Link href="/testregister">
+              Don't have an account, register here!
+            </Link>
 
             <Text color="red"> {getStatusMessage(loginStatus)} </Text>
-
           </Stack>
         </form>
       </Container>

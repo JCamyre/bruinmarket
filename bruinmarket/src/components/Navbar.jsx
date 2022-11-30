@@ -7,16 +7,20 @@ import {
   Spacer,
   Text,
   Heading,
+  Button,
 } from "@chakra-ui/react";
 import { AuthContext } from "../App";
+import { useNavigate } from "react-router-dom";
+import logout from "../logout";
 
 function Navbar() {
   const userData = React.useContext(AuthContext);
-  const username = userData ? userData.username : "Guest";
+  const username = userData ? userData.username : "";
   const uid = userData ? userData.uid : "";
   const [profilePic, setProfilePic] = useState(
     "https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"
   );
+  // const navigate = useNavigate();
 
   return (
     <HStack pl="12" pr="12" bg="purple.300" pt="4" pb="4">
@@ -41,6 +45,20 @@ function Navbar() {
           {username}
         </Text>
       </a>
+      {uid && (
+        <Button
+          onClick={() => {
+            logout();
+
+            // if (logout()) {
+            //   navigate("/login");
+            // }
+          }}
+        >
+          Logout
+        </Button>
+      )}
+      {!uid && <Button>Login</Button>}
     </HStack>
   );
 }

@@ -69,7 +69,7 @@ function App() {
                 >
                   <Route path="/" element={<Home />} />
                   <Route path="/allposts" element={<AllPosts />} />
-                  <Route path={`/profile/${userUID}`} element={<Profile />} />
+                  <Route path={`/profile/:uid`} element={<Profile />} />
                 </Route>
                 <Route
                   element={
