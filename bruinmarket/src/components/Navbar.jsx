@@ -11,7 +11,8 @@ import {
 import { AuthContext } from "../App";
 
 function Navbar() {
-  const [username, setUsername] = useState("");
+  const userData = React.useContext(AuthContext);
+  const username = userData ? userData.username : "Guest";
   const [profilePic, setProfilePic] = useState(
     "https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"
   );
@@ -36,7 +37,7 @@ function Navbar() {
       >
         <Image borderRadius="full" boxSize="80px" src={profilePic} />
         <Text fontSize="xl" pl="4" color="white">
-          AryanKaul69
+          {username}
         </Text>
       </a>
     </HStack>
