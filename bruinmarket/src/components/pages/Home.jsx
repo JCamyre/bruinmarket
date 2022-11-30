@@ -1,7 +1,12 @@
 import React from "react";
+import Stars from "../Stars";
 
 function Home() {
-  return <div>Joseph's Home page</div>;
+  return (
+    <div>
+      <Stars />
+    </div>
+  );
 }
 
 export default Home;
