@@ -6,28 +6,13 @@ import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import axios from 'axios'
-// import FetchImages from "./components/pages/FetchImages";
 
-import firebase from './firebase'
-import '@firebase/auth'
-
-
-// ARRAY OF ITEMS - TEST
-let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
-let itemList=items.map((item,index)=>{
-  return <li key={index}>{item}</li>
-})
-
-// function Image(props) {
-//   return (
-//     <picture>
-//       <source media="(min-width:465px)" src='https://img2.carmax.com/assets/22970819/hero.jpg?width=400'></source>
-//       <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;"></img>
-//         {props.value}
-//   </picture>
-//   );
-// }
-
+import { app, auth, database, authentication, firestore, initializeApp } from './firebase'
+import { collection, getDocs } from "firebase/firestore";
+import FetchPosts from "./components/pages/FetchPosts";
+// import firebase from "./firebase"
+// import db from "firebase/database"
+// import '@firebase/auth'
 
 
 function App() {
@@ -40,23 +25,38 @@ function App() {
     setQuery(e.target.value);
   };
 
-  // FIREBASE - FETCH POSTS
-  const ref = firebase.firestore().collection("posts");
-  console.log(ref);
+  // // FIREBASE - FETCH POSTS BY ID & DATA
+  // const [posts, setPosts] = useState([])
+  // useEffect(() => {
+  //   ;(async () => {
+  //       const colref = collection(database, 'posts')
+  //       const snapshots = await getDocs(colref)
 
-  function getPostsFromFirebase() {
-    ref.onSnapshot((querySnapshot) => {
-      const items = [];
-      querySnapshot.forEach((doc) => {
-        items.push(doc.data());
-      });
-      setPosts(items);
-    });
-  }
+  //       const docs = snapshots.docs.map((doc) => {
+  //         const data = doc.data()
+  //         data.id = doc.id
+  //         return data
+  //       })
+  //       setPosts(docs)
+  //       console.log(docs);
+  //   })()
+  // }, []);
 
-  useEffect(() => {
-    getPostsFromFirebase();
-  }, []);
+
+
+         // OLD
+  // function getPostsFromFirebase() {
+  //   ref.onSnapshot((querySnapshot) => {
+  //     const items = [];
+  //     querySnapshot.forEach((doc) => {
+  //       items.push(doc.data());
+  //     });
+  //     setPosts(items);
+  //   });
+  // }
+  // useEffect(() => {
+  //   getPostsFromFirebase();
+  // }, []);
 
   // HANDLE INFINITE SCROLLING
   const handleObserver = useCallback((entries) => {
@@ -105,16 +105,12 @@ function App() {
           <Routes>
             <Route index element={<Home />} />
             <Route path="/allposts" element={<AllPosts />} />
+            <Route path="/fetchposts" element={<FetchPosts />} />
+
           </Routes>
         </BrowserRouter>
       </ChakraProvider>
 
-      <div>
-        <h2>This is a simple list of items</h2>
-        <ul>
-          {itemList}
-        </ul>
-      </div>
     </>
   );
 }

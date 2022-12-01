@@ -115,6 +115,21 @@ function AllPosts() {
               View item
             </Button>
           </Box>
+
+          <Box maxW='32rem'>
+            <Heading mb={2} size='l'>
+              $input_price <br></br>
+              input_itemname
+            </Heading>
+            <Text fontSize='l'>
+              input_location
+              <br></br>
+              input_description
+            </Text>
+            <Button size='md' colorScheme='green' mt='12px'>
+              View item
+            </Button>
+          </Box>
         </Stack>
         
       </div>
