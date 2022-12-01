@@ -81,7 +81,7 @@ function App() {
                     />
                   }
                 >
-                  <Route path="/testregister" element={<TempRegister />} />
+                  <Route path="/register" element={<Register />} />
                   {/* Add <Route path='/register' /> here */}
                   <Route path="/login" element={<Login />} />
                 </Route>
