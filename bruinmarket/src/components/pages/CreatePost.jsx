@@ -17,7 +17,8 @@ import { storage } from './../../firebase';
 import { AuthContext } from '../../App';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import {database} from "./../../firebase";
-import {collection, addDoc, getDocs} from "firebase/firestore"; 
+import {collection, addDoc, doc, updateDoc, getDocs} from "firebase/firestore"; 
+
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 function CreatePost() {
   const [title, setTitle] = useState("");
@@ -51,11 +52,16 @@ function CreatePost() {
       title: title,
       summary: summary,
       category: category,
-      price: price
+      price: price,
+      bought_uid: null
     });
     
     // database.post(user_id, title, summary, category)
     console.log(e.target)
+    const curDoc = doc(database, "posts", docRef.id);
+    await updateDoc(curDoc, {
+      "post_id": docRef.id,
+    });
     uploadPicture(e.target[4].files, docRef.id)
 
     // pictures we will figure out.
