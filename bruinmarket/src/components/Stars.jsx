@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import StarRatings from "react-star-ratings";
 import {firestore, database } from "./../firebase"
 import { doc, updateDoc, collection, query, where, getDocs} from "firebase/firestore"; 
+var stars = 5;
+var totalReviews = 0;
 
 function Stars({ uid }) {
   //const [stars, setStars] = useState(5);
-  var stars = 5;
-  //const [totalReviews, setTotalReviews] = useState(0);
-  var totalReviews = 0;
   //const [userData, setData] = useState(null);
  // const [dataName, setDataName] = useState(null);
   uid = "vgdhaXomwwbt793g2MIjMgoHcZp1";
