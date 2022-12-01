@@ -1,7 +1,7 @@
 import React from "react"
 import {Input, Button, Text, VStack, Heading, Container, Link} from "@chakra-ui/react"
 import register from "../../register.js"
-import login from "../../login"
+import login from "../../newlogin"
 import { useNavigate } from "react-router-dom"; 
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Input, Stack, Link, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import login from "../../login";
+import login from "../../newlogin";
 
 function Login() {
   const [email, setEmail] = useState("");
