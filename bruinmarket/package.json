@@ -10,9 +10,11 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^7.6.6",
+    "fs": "^0.0.1-security",
     "leaflet": "^1.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-geocode": "^0.2.3",
     "react-leaflet": "^4.2.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.3",
@@ -45,5 +47,10 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.0"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }

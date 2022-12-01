@@ -1,40 +1,48 @@
 import React, {useState, useEffect} from "react";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import { Icon } from 'leaflet'
-import {Container, VStack} from "@chakra-ui/react"
-import '../App.css';
+import {Container, VStack, Input} from "@chakra-ui/react"
+import '../Map.css';
 import marker from '../marker.png';
+
 const myIcon = new Icon({
     iconUrl: marker,
     iconSize: [22,32]
    })
 
-// function componentDidMount() {
-// navigator.geolocation.getCurrentPosition(function(position) {
-//     console.log("Latitude is :", position.coords.latitude);
-//     console.log("Longitude is :", position.coords.longitude);
-//     //return [position.coords.latitude, position.coords.longitude];
-//   });
-// }
-function App() {
-    //position = [45.4, -75.7]
-    //navigator.geolocation.getCurrentPosition(function(position) {return [position.coords.latitude, position.coords.longitude];});
-    //var position = navigator.geolocation.getCurrentPosition(function(position) {return [position.coords.latitude, position.coords.longitude];});
-    //console.log(position);
-    const [latitude, setLatitude] = useState(0);
-    const [longitude, setLongitude] = useState(0);
+function ChangePosition({latitude, longitude}) {
+    const map = useMap();
+    map.flyTo([latitude, longitude]);
+    return null;
+}
+
+function BMap() {
+    var ziptolonglat = {
+        "90024": [34.065723, -118.434969],
+        "90025": [34.045421, -118.445873],
+        "90049": [34.092540, -118.491064],
+        "90095": [34.071200, -118.443523]
+    };
+    const [latitude, setLatitude] = useState(34.0725);
+    const [longitude, setLongitude] = useState(-118.4522);
+    const [zipcode, setZipcode] = useState("");
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
-            console.log("Latitude is :", position.coords.latitude);
-            console.log("Longitude is :", position.coords.longitude);
-            //return [position.coords.latitude, position.coords.longitude];
-        })
+        console.log(zipcode);
+        if (zipcode in ziptolonglat) {
+            console.log("Hello");
+            setLatitude(ziptolonglat[zipcode][0]);
+            setLongitude(ziptolonglat[zipcode][1]);
+        }
+        console.log(latitude);
+        console.log(longitude);
     })
   return (
       <div>
         <Container maxW="container.md" pt="40">
+        <Input
+              placeholder="Postal Code"
+              onChange={(e) => {setZipcode(e.currentTarget.value)}}
+            />
         <VStack>
         <link
             rel="stylesheet"
@@ -43,11 +51,12 @@ function App() {
             crossorigin=""
         />
         <MapContainer center={[34.0725, -118.4522]} zoom={16}scrollWheelZoom={false}>
+        {<ChangePosition latitude={latitude} longitude={longitude} />}
         <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={[34.0725, -118.4522]} icon={myIcon}/>
+        <Marker position={[latitude, longitude] } icon={myIcon}/>
         </MapContainer>
         </VStack>
         </Container>
@@ -55,4 +64,4 @@ function App() {
   );
 }
 
-export default App;
+export default BMap;
