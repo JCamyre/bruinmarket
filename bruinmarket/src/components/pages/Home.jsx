@@ -2,16 +2,11 @@ import React from "react";
 import { AuthContext } from "../../App";
 import { Button, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import logout from "../../logout";
 import SideBar from "../../components/SideBar";
 import { useEffect } from "react";
-import {getCategoryPosts, addUserBid} from "../../utilities/Posts";
-=======
-import logout from "../../logout"
-import Stars from "../Stars";
->>>>>>> stars
-
+import {getCategoryPosts, addUserBid, finalizeSale} from "../../utilities/Posts";
+import Stars from "../Stars"
 function Home() {
   const navigate = useNavigate();
   const userData = React.useContext(AuthContext);
@@ -43,7 +38,8 @@ function Home() {
       </Button> */}
       <SideBar setCategory={setCategory} />
       {/* <Text>{JSON.stringify(currPosts)}</Text> */}
-      <Button onClick={() => addUserBid("FKOqwCtZr5arG0Qt4Xz0WxKiJlS2", "test", 200)}/>
+      <Button onClick={() => addUserBid("gCeJI9deiKHuGIBPO28I", "fuck2", 600)}>Test addUserBid</Button>
+      <Button onClick={() => finalizeSale("gCeJI9deiKHuGIBPO28I", "test")}>Test finalizeSale</Button>
       <div>Home</div>
       <div>Logged in as {userData?.username}</div>
       <Button onClick={() => {

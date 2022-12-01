@@ -13,23 +13,29 @@ const getCategoryPosts = async (category) => {
     return posts
 }
 
-const addUserBid = async (postID, userID, amount) => {
-    const key = `offers.${userID}`
-    console.log(key)
+const updatePostData = async (postID, userID, key, value) => {
     const q = firestore.query(
         firestore.collection(database, "posts"),
-        firestore.where("uid", "==", postID)
+        firestore.where("post_id", "==", postID)
     );
     const docs = await firestore.getDocs(q);
     let targetid = null;
     docs.forEach((doc) => {
       targetid = doc.id
     })
-    console.log(targetid)
     const target = doc(database, "posts", targetid)
     await updateDoc(target, {
-        [key] : amount
+        [key] : value
     });
 }
 
-export {getCategoryPosts, addUserBid};
+const addUserBid = async (postID, userID, amount) => {
+    const key = `offers.${userID}`
+    await updatePostData(postID, userID, key, amount)
+}
+
+const finalizeSale = async (postID, uid) => {
+    await updatePostData(postID, uid, "bought_uid", uid)
+}
+
+export {getCategoryPosts, addUserBid, finalizeSale};

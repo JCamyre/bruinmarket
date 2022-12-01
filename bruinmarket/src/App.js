@@ -3,16 +3,11 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import AllPosts from "./components/pages/AllPosts.jsx";
-<<<<<<< HEAD
 import Post from "./components/pages/Post.jsx";
 import Register from "./components/pages/Register.jsx";
 import Profile from "./components/pages/Profile";
 import TempRegister from "./components/pages/TempRegister.jsx";
-=======
-import TempRegister from "./components/pages/TempRegister.jsx";
 import CreatePost from "./components/pages/CreatePost.jsx";
-import Post from "./components/pages/Post.jsx";
->>>>>>> stars
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Login from "./components/pages/Login.jsx";
