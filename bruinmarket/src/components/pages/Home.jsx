@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import logout from "../../logout";
 import SideBar from "../../components/SideBar";
 import { useEffect } from "react";
-import getCategoryPosts from "../../utilities/Posts";
+import {getCategoryPosts, addUserBid} from "../../utilities/Posts";
 
 function Home() {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ function Home() {
       </Button> */}
       <SideBar setCategory={setCategory} />
       {/* <Text>{JSON.stringify(currPosts)}</Text> */}
+      <Button onClick={() => addUserBid("FKOqwCtZr5arG0Qt4Xz0WxKiJlS2", "test", 200)}/>
     </>
   );
 }

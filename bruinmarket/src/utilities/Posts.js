@@ -1,4 +1,5 @@
 import { firestore, database } from "../firebase"
+import { doc, updateDoc, arrayUnion } from "firebase/firestore"    
 
 const getCategoryPosts = async (category) => {
     const posts = []
@@ -12,4 +13,23 @@ const getCategoryPosts = async (category) => {
     return posts
 }
 
-export default getCategoryPosts;
+const addUserBid = async (postID, userID, amount) => {
+    const key = `offers.${userID}`
+    console.log(key)
+    const q = firestore.query(
+        firestore.collection(database, "posts"),
+        firestore.where("uid", "==", postID)
+    );
+    const docs = await firestore.getDocs(q);
+    let targetid = null;
+    docs.forEach((doc) => {
+      targetid = doc.id
+    })
+    console.log(targetid)
+    const target = doc(database, "posts", targetid)
+    await updateDoc(target, {
+        [key] : amount
+    });
+}
+
+export {getCategoryPosts, addUserBid};
