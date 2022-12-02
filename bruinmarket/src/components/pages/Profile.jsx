@@ -65,7 +65,7 @@ function Profile() {
   // const username = userData ? userData.username : "User";
 
   return (
-    <Container maxW="container.md" pt="4">
+    <Container maxW="container.md" pt="4" mb="8">
       <VStack spacing="24px" divider={<StackDivider borderColor="gray.200" />}>
         <VStack>
           <Center>
@@ -96,6 +96,7 @@ function Profile() {
           ))}
         </Box>
         <Heading size="md">Bought History -</Heading>
+        <Text>I'M WAITING...</Text>
       </VStack>
     </Container>
   );
