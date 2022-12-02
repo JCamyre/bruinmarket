@@ -12,7 +12,7 @@ import {
 import { getSlideTransition } from "@chakra-ui/react";
 var totalReviews = 0;
 
-function Stars({ uid }) {
+function Stars({ uid, displayOnly }) {
   const [stars, setStars] = useState(0);
   //const [userData, setData] = useState(null);
   // const [dataName, setDataName] = useState(null);
@@ -71,7 +71,7 @@ function Stars({ uid }) {
     <div>
       <StarRatings
         rating={stars}
-        changeRating={(stars) => updateStars(stars)}
+        changeRating={displayOnly ? null : (stars) => updateStars(stars)}
         starHoverColor="yellow"
         starRatedColor="yellow"
       />

@@ -19,6 +19,7 @@ import { database, firestore } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { stringify } from "@firebase/util";
+import Stars from "../Stars";
 
 function Profile() {
   const { uid } = useParams();
@@ -77,16 +78,12 @@ function Profile() {
             </Heading>
           </Center>
           <Center>
-            <ButtonGroup>
-              <Button>Follow</Button>
-              <Button>View Profile</Button>
-              <Button>Report</Button>
-            </ButtonGroup>
+            <Stars displayOnly={true} />
           </Center>
         </VStack>
         <VStack>
           <Heading size="md">About</Heading>
-          <Text size="sm">Joined BruinMarket in Year</Text>
+          <Text size="sm">Likes to have fun at the beach</Text>
         </VStack>
         <Heading size="md"> Market Listings - #</Heading>
         <Box>

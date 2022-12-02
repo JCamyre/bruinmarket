@@ -1,3 +1,11 @@
 a:hover {
     text-decoration: none;
 }
+
+Carousel img {
+    border-radius: 24px
+}
+
+Button {
+    background-color: aliceblue;
+}
