@@ -215,7 +215,7 @@ function Post() {
       bg="purple.300"
       borderRadius="16"
       p="8"
-      mt="4"
+      mt="8"
       mb="8"
       boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
     >
@@ -252,7 +252,6 @@ function Post() {
             <Heading size="2xl" lineHeight={1} color="orange.400">
               YOU HAVE BOUGHT THIS ITEM! Please rate your seller!
             </Heading>
-            <Stars uid={post ? post.uid : ""} />
           </Box>
         )}
         {/* SELLER POV */}
@@ -278,6 +277,7 @@ function Post() {
         <hr />
         <Heading size="lg">Seller Information</Heading>
         <VStack display="flex" justifyContent="left">
+          <Stars displayOnly={true} uid={post ? post.uid : ""} />
           <Text fontSize="xl">{seller ? seller.username : ""}</Text>
           <Text fontSize="xl">Contact me at: {seller ? seller.email : ""}</Text>
           <a href={`/profile/${seller ? seller.uid : ""}`}>
@@ -373,7 +373,6 @@ function Post() {
           
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
-        <Stars displayOnly={true} uid={post ? post.uid : ""} />
 
         <VStack>
           <link

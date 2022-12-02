@@ -13,6 +13,7 @@ import { AuthContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import logout from "../logout";
 import { auth } from "../firebase";
+import CreatePost from "./pages/CreatePost";
 
 function Navbar() {
   const [uid, setUid] = useState("");
@@ -42,6 +43,11 @@ function Navbar() {
         </Box>
       </a>
       <Spacer />
+      <a href="/createpost">
+        <Text fontSize="xl" pl="4" pr="2" color="white">
+          Create a Post
+        </Text>
+      </a>
       <a
         href={`/profile/${uid}`}
         style={{

@@ -24,7 +24,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { stringify } from "@firebase/util";
 import Stars from "../Stars";
-import { getUserPosts } from "../../utilities/Posts";
+import { getUserPosts, getUserBoughtPosts } from "../../utilities/Posts";
 
 function Profile() {
   const { uid } = useParams();
@@ -66,12 +66,22 @@ function Profile() {
   }, [uid]);
 
   const [currPosts, setCurrPosts] = React.useState([]);
+  const [boughtPosts, setBoughtPosts] = React.useState([]);
   useEffect(() => {
     async function getPosts(uid) {
       return await getUserPosts(uid);
     }
     getPosts(uid).then((posts) => {
       setCurrPosts(posts);
+    });
+  }, []);
+
+  useEffect(() => {
+    async function getPosts(uid) {
+      return await getUserBoughtPosts(uid);
+    }
+    getPosts(uid).then((posts) => {
+      setBoughtPosts(posts);
     });
   }, []);
 
@@ -102,16 +112,6 @@ function Profile() {
           <Text size="sm">Likes to have fun at the beach</Text>
         </VStack>
         <Heading size="md"> Market Listings - #</Heading>
-        <Box>
-          {posts.map((post) => (
-            <Box>
-              <Text>{post.title}</Text>
-              <Text>{post.summary}</Text>
-              <Text>{post.category}</Text>
-            </Box>
-          ))}
-        </Box>
-        <Heading size="md">Bought History -</Heading>
         <Center w="50%">
           <Grid templateColumns="repeat(2, 1fr)" gap={6} maxW="container.lg">
             {currPosts &&
@@ -142,7 +142,37 @@ function Profile() {
               ))}
           </Grid>
         </Center>
-        <Text>I'M WAITING...</Text>
+        <Heading size="md">Bought History -</Heading>
+        <Center w="50%">
+          <Grid templateColumns="repeat(2, 1fr)" gap={6} maxW="container.lg">
+            {boughtPosts &&
+              boughtPosts.map((post) => (
+                <GridItem
+                  w="400px"
+                  h="400"
+                  color="white"
+                  bg="purple.300"
+                  borderRadius="16"
+                  boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
+                  p="8"
+                >
+                  <Link class="post" href={`/post/${post.post_id}`}>
+                    <Box overflow="hidden">
+                      <Img src="https://bit.ly/2Z4KKcF" borderRadius="8" />
+                      <Box display="flex" alignItems="baseline">
+                        {" "}
+                        <Box>
+                          <Heading size="xl">{post.title}</Heading>
+                          <Heading size="md">{post.category}</Heading>
+                          <Heading size="md">${post.price}</Heading>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Link>
+                </GridItem>
+              ))}
+          </Grid>
+        </Center>
       </VStack>
     </Container>
   );
