@@ -44,13 +44,13 @@ function App() {
       let data = null;
       docs.forEach((doc) => {
         // console.log(doc.data().username)
-        data = doc.data()
-      })
-      console.log(data)
-      return data
+        data = doc.data();
+      });
+      console.log(data);
+      return data;
     }
     if (userUID) {
-      getUserData(userUID).then(data => setData(data))
+      getUserData(userUID).then((data) => setData(data));
     }
   }, [userUID]);
   return (
@@ -82,8 +82,7 @@ function App() {
                     />
                   }
                 >
-                  <Route path="/testregister" element={<TempRegister />} />
-                  {/* Add <Route path='/register' /> here */}
+                  <Route path="/register" element={<Register />} />
                   <Route path="/login" element={<Login />} />
                 </Route>
               </>
