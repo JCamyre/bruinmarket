@@ -142,7 +142,7 @@ function Post() {
           <a href={`profile/${user.uid}`}>
             <Button color="purple.300">View Profile</Button>
           </a></> : <Text> You are the seller </Text>}
-          { (user !== {} && post !== {}) ? (user?.uid !== post?.uid) ? //if not user who submitted post, give option to submit bid
+          { (Object.keys(user).length !== 0 || Object.keys(post).length !== 0) ? (user?.uid !== post?.uid) ? //if not user who submitted post, give option to submit bid
           (!soldTo ?
           <form onSubmit={Submit} method="POST">
             <VStack spacing="2">
@@ -159,12 +159,12 @@ function Post() {
                 />
               </InputGroup>
               
-              <Button type="submit" maxW="sm" >
+              <Button type="submit" maxW="sm" color="purple.300">
                 Submit bid
               </Button>
-              <Text color="red"> {bidStatus} </Text>
+              <Text color={bidStatus === "Successfully submitted/updated bid" ? "green" : "red"}> {bidStatus} </Text>
             </VStack>
-          </form> : <Text>{`Already sold to ${currBidsUsernames[soldTo]}`}</Text>)
+          </form> : (soldTo === currentUser.uid ? <Text color="red">{`Already sold to ${currBidsUsernames[soldTo]}`}</Text> : <Text color="green">You already own this item</Text>))
           : //if user is seller
             <TableContainer>
               <Table>
@@ -176,7 +176,7 @@ function Post() {
                 </Tr>
               </Thead>
               <Tbody>
-              {(!currBids && !currBidsUsernames) ? Object.keys(currBids).map(user => {
+              {(Object.keys(currBids).length !== 0 || Object.keys(currBidsUsernames).length !== 0) ? Object.keys(currBids).map(user => {
                 return (
                   <Tr>
                       <Td>{`${currBidsUsernames[user]}`}</Td> 
