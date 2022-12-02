@@ -44,6 +44,66 @@ const addUserBid = async (postID, userID, amount) => {
 
 const finalizeSale = async (postID, uid) => {
   await updatePostData(postID, uid, "bought_uid", uid);
+  return uid;
 };
 
-export { getCategoryPosts, addUserBid, finalizeSale };
+const getBuyer = async (postID) => {
+  const postData = await getPostData(postID);
+  return postData.bought_uid;
+};
+
+const getBids = async (postID) => {
+  const q = firestore.query(
+    firestore.collection(database, "posts"),
+    firestore.where("post_id", "==", postID)
+  );
+  const docs = await firestore.getDocs(q);
+  let target = null;
+  docs.forEach((doc) => {
+    target = doc.data();
+  });
+  let bids = {};
+  for (var user in target.offers) {
+    bids[user] = target.offers[user];
+    console.log(bids);
+  }
+  return bids;
+};
+
+const getPostData = async (postID) => {
+  const q = firestore.query(
+    firestore.collection(database, "posts"),
+    firestore.where("post_id", "==", postID)
+  );
+  const docs = await firestore.getDocs(q);
+  let target = null;
+  docs.forEach((doc) => {
+    target = doc.data();
+  });
+  return target;
+};
+
+async function getUserData(uid) {
+  const q = firestore.query(
+    firestore.collection(database, "users"),
+    firestore.where("uid", "==", uid)
+  );
+  const docs = await firestore.getDocs(q);
+  let data = null;
+  docs.forEach((doc) => {
+    // console.log(doc.data().username)
+    data = doc.data();
+  });
+  console.log(data);
+  return data;
+}
+
+export {
+  getCategoryPosts,
+  addUserBid,
+  finalizeSale,
+  getBids,
+  getPostData,
+  getUserData,
+  getBuyer,
+};

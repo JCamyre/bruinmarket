@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/pages/Login.jsx";
 import ProtectedRoute from "./utilities/ProtectedRoute";
 import { auth, firestore, database } from "./firebase";
+import { getUserData } from "./utilities/Posts";
 
 const AuthContext = React.createContext(null);
 
