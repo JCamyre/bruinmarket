@@ -93,6 +93,8 @@ function CreatePost() {
       latlongcoord: ziptolonglat[zipcode]
     });
 
+
+
     // database.post(user_id, title, summary, category)
     console.log(e.target)
     const curDoc = doc(database, "posts", docRef.id);
@@ -143,6 +145,19 @@ function CreatePost() {
     });
   }
 
+  const categories = [
+    "All",
+    "Books",
+    "Cars",
+    "Clothes",
+    "Electronics",
+    "Housing",
+    "Music",
+    "Sporting",
+    "Toys",
+    "Miscellaneous",
+  ]; 
+
   return (
     <Container maxW="container.md" pt={40}>
       <form onSubmit={Submit} method="POST">
@@ -162,8 +177,9 @@ function CreatePost() {
               placeholder="Select category"
               onChange={(e) => setCategory(e.currentTarget.value)}
             >
-              <option>Cars</option>
-              <option>Books</option>
+              {categories.map(category => (
+                <option>{category}</option>
+              ))}
             </Select>
           </FormControl>
           
