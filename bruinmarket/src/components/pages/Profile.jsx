@@ -112,8 +112,8 @@ function Profile() {
           ))}
         </Box>
         <Heading size="md">Bought History -</Heading>
-        <Center w="85%">
-          <Grid templateColumns="repeat(3, 1fr)" gap={6} maxW="container.lg">
+        <Center w="50%">
+          <Grid templateColumns="repeat(2, 1fr)" gap={6} maxW="container.lg">
             {currPosts &&
               currPosts.map((post) => (
                 <GridItem

@@ -122,4 +122,5 @@ export {
   getPostData,
   getUserData,
   getBuyer,
+  getUserPosts,
 };
