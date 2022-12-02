@@ -7,6 +7,7 @@ import Post from "./components/pages/Post.jsx";
 import Register from "./components/pages/Register.jsx";
 import Profile from "./components/pages/Profile";
 import TempRegister from "./components/pages/TempRegister.jsx";
+import CreatePost from "./components/pages/CreatePost.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Login from "./components/pages/Login.jsx";

@@ -39,7 +39,9 @@ function Post() {
 
   useEffect(() => {
     const updatedPost = post;
-    updatedPost["bought_uid"] = currentUser.uid;
+    if (currentUser) {
+      updatedPost["bought_uid"] = currentUser.uid;
+    }
     setPost(updatedPost);
   }, [currentUser]);
 
