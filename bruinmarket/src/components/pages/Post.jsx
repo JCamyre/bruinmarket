@@ -310,7 +310,7 @@ function Post() {
                 </VStack>
               </form>
             ) : soldTo === currentUser.uid ? (
-              <Text color="red">{`Already sold to ${currBidsUsernames[soldTo]}`}</Text>
+              <Text color="red">{`Already sold to another user, good luck next time!`}</Text>
             ) : (
               <Text color="green">You already own this item</Text>
             )
