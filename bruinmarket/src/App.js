@@ -6,7 +6,6 @@ import AllPosts from "./components/pages/AllPosts.jsx";
 import Post from "./components/pages/Post.jsx";
 import Register from "./components/pages/Register.jsx";
 import Profile from "./components/pages/Profile";
-import TempRegister from "./components/pages/TempRegister.jsx";
 import CreatePost from "./components/pages/CreatePost.jsx";
 import Map from "./components/pages/Map.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -74,6 +73,7 @@ function App() {
                   <Route path="/allposts" element={<AllPosts />} />
                   <Route path={`/profile/:uid`} element={<Profile />} />
                   <Route path="/post/:id" element={<Post />} />
+                  <Route path="/createpost" element = {<CreatePost />} />
                 </Route>
                 <Route
                   element={
