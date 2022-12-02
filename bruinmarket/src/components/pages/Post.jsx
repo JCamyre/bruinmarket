@@ -226,6 +226,7 @@ function Post() {
       mb="8"
       boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
     >
+      {" "}
       <Box w="60%" minH="100vh">
         <Carousel
           showArrows={true}
@@ -272,7 +273,7 @@ function Post() {
           </Box>
         )}
 
-        <Text fontSize="lg">{`$${parseFloat(post.price)
+        <Text fontSize="lg">{`$${parseFloat(post ? post.price : "")
           .toFixed(2)
           .toString()}`}</Text>
 
@@ -286,12 +287,6 @@ function Post() {
         <hr />
         <Heading size="lg">Seller Information</Heading>
         <VStack display="flex" justifyContent="left">
-          <Text fontSize="xl">{seller ? seller.username : ""}</Text>
-          <Text fontSize="xl">Contact me at: {seller ? seller.email : ""}</Text>
-          <a href={`/profile/${seller ? seller.uid : ""}`}>
-            <Button color="purple.300">View Profile</Button>
-          </a>
-          {/* </a></> : <Text> You are the seller </Text>} */}
           {Object.keys(user).length !== 0 || Object.keys(post).length !== 0 ? (
             user?.uid !== post?.uid ? ( //if not user who submitted post, give option to submit bid
               !soldTo ? (
@@ -387,7 +382,6 @@ function Post() {
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
         <Stars displayOnly={true} uid={post ? post.uid : ""} />
-
         <VStack>
           <link
             rel="stylesheet"
