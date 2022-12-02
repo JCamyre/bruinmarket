@@ -146,20 +146,20 @@ function Post() {
       <Spacer />
       <Box w="35%" pl="4" color="white">
         <Heading size="2xl" lineHeight={2}>
-          {post.title}
+          {post ? post.title : ""}
         </Heading>
         <Text fontSize="2xl" lineHeight={2}>
-          Price: ${post.price}
+          Price: ${post ? post.price : ""}
         </Text>
         <Heading size="lg">Category</Heading>
-        <Text fontSize="2xl">{post.category}</Text>
+        <Text fontSize="2xl">{post ? post.category : ""}</Text>
         {/* <Text fontSize="sm">Listed a day ago in Sacramento, CA</Text> */}
 
         {/* <Heading size="lg">Details</Heading> */}
         {/* <Heading size="xs">Condition - New</Heading> */}
         <Heading size="lg">Description</Heading>
         <Text fontSize="2xl" lineHeight="8">
-          {post.summary}
+          {post ? post.summary : ""}
         </Text>
         {/* If we have to use a location thing, try this: https://www.openstreetmap.org/copyright */}
         <hr />
@@ -167,7 +167,7 @@ function Post() {
         <VStack display="flex" justifyContent="left">
           <Text fontSize="xl">{user ? user.username : ""}</Text>
           <Text fontSize="xl">Contact me at: {user ? user.email : ""}</Text>
-          <a href={`profile/${user ? user.uid : ""}`}>
+          <a href={`/profile/${user ? user.uid : ""}`}>
             <Button color="purple.300">View Profile</Button>
           </a>
         </VStack>

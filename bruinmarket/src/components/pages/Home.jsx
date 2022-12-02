@@ -9,7 +9,16 @@ import {
   addUserBid,
   finalizeSale,
 } from "../../utilities/Posts";
-import { Container, Box, GridItem, Center, Img } from "@chakra-ui/react";
+import {
+  Container,
+  Box,
+  GridItem,
+  Center,
+  Img,
+  Heading,
+  Link,
+} from "@chakra-ui/react";
+import "./Home.css";
 
 function Home() {
   const userData = React.useContext(AuthContext);
@@ -27,7 +36,7 @@ function Home() {
   console.log("Currposts: ", currPosts, category);
 
   return (
-    <Container maxW="100%" display="block">
+    <Container maxW="100%" display="block" mb="16">
       <SideBar setCategory={setCategory} />
 
       <Center w="85%">
@@ -43,13 +52,18 @@ function Home() {
                 boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
                 p="8"
               >
-                <Box overflow="hidden">
-                  <Img src="https://bit.ly/2Z4KKcF" />
-                  <Box display="flex" alignItems="baseline">
-                    {" "}
-                    <Box>fdsafdsa</Box>
+                <Link class="post" href={`/post/${post.post_id}`}>
+                  <Box overflow="hidden">
+                    <Img src="https://bit.ly/2Z4KKcF" borderRadius="8" />
+                    <Box display="flex" alignItems="baseline">
+                      {" "}
+                      <Box>
+                        <Heading size="xl">{post.title}</Heading>
+                        <Heading size="md">{post.category}</Heading>
+                      </Box>
+                    </Box>
                   </Box>
-                </Box>
+                </Link>
               </GridItem>
             ))}
         </Grid>
