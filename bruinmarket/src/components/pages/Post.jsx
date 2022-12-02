@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Icon } from 'leaflet'
+import marker from '../marker.png';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -30,9 +33,22 @@ import {
   getDocs,
 } from "firebase/firestore";
 
+const myIcon = new Icon({
+  iconUrl: marker,
+  iconSize: [22,32]
+ })
+
+ function ChangePosition({latitude, longitude}) {
+  const map = useMap();
+  map.flyTo([latitude, longitude]);
+  return null;
+}
+
 function Post() {
   const { postId } = useParams();
   const currentUser = React.useContext(AuthContext);
+  const [latitude, setLatitude] = useState(34.0725);
+  const [longitude, setLongitude] = useState(-118.4522);
 
   const [post, setPost] = useState({
     uid: "",
@@ -107,6 +123,8 @@ function Post() {
     fetchPostInfo(postId).then((post) => {
       console.log("Post: ", post);
       setPost(post);
+      setLatitude(post["latlongcoord"][0]);
+      setLongitude(post["latlongcoord"][1]);
     });
   }, []);
 
@@ -162,6 +180,21 @@ function Post() {
           {post ? post.summary : ""}
         </Text>
         {/* If we have to use a location thing, try this: https://www.openstreetmap.org/copyright */}
+        {/* <VStack>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+            integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+            crossorigin=""
+        />
+        <MapContainer center={[latitude, longitude]} zoom={16}scrollWheelZoom={false}>
+        <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={[latitude, longitude] } icon={myIcon}/>
+        </MapContainer>
+        </VStack> */}
         <hr />
         <Heading size="lg">Seller Information</Heading>
         <VStack display="flex" justifyContent="left">
@@ -180,6 +213,22 @@ function Post() {
             <p>test</p>
           </div>
         ))}
+        <VStack>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+            integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+            crossorigin=""
+        />
+        <MapContainer center={[latitude, longitude]} zoom={16}scrollWheelZoom={false}>
+        {<ChangePosition latitude={latitude} longitude={longitude} />}
+        <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={[latitude, longitude] } icon={myIcon}/>
+        </MapContainer>
+        </VStack>
       </Box>
     </Container>
   );
