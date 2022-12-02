@@ -1,5 +1,5 @@
-import React from "react"
-import {Input, Button, Text, VStack, Heading, Container, Link} from "@chakra-ui/react"
+import React, {useState} from "react"
+import {Input, Button, Text, VStack, Heading, Container, Link, InputGroup, InputRightElement} from "@chakra-ui/react"
 import register from "../../register.js"
 import login from "../../login"
 import { useNavigate } from "react-router-dom"; 
@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 
 
 function Registration() {
-    const [username, setUsername] = React.useState()
-    const [email, setEmail] = React.useState()
-    const [submittedEmail, setSubmittedEmail] = React.useState()
-    const [password, setPassword] = React.useState()
-    const [status, setStatus] = React.useState(5)
+    const [username, setUsername] = useState()
+    const [email, setEmail] = useState()
+    const [submittedEmail, setSubmittedEmail] = useState()
+    const [password, setPassword] = useState()
+    const [status, setStatus] = useState(5)
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClick = () => setShowPassword(!showPassword);
 
     const navigate = useNavigate();
 
@@ -69,7 +71,17 @@ function Registration() {
             <Heading>Register Here!</Heading>
             <Input placeholder="username" onChange={e=>setUsername(e.currentTarget.value)}></Input>
             <Input placeholder="email" onChange={e=>setEmail(e.currentTarget.value)}></Input>
-            <Input placeholder="password" onChange={e=>setPassword(e.currentTarget.value)}></Input>
+            <InputGroup size='md'>
+            <Input type = {showPassword ? "text" : "password"}
+              placeholder="password"
+              onChange={(e) => setPassword(e.currentTarget.value)}
+            />
+            <InputRightElement width='4.5rem'>
+            <Button h='1.75rem' size='sm' onClick={handleClick}>
+              {showPassword ? 'Hide' : 'Show'}
+            </Button>
+            </InputRightElement>
+            </InputGroup>
 
             <Button onClick={Submit}>Register</Button>
             <Text color="red"> {getStatusMessage(status)} </Text>
