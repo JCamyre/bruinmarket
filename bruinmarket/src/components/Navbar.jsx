@@ -18,9 +18,7 @@ function Navbar() {
   const [uid, setUid] = useState("");
   const [username, setUsername] = useState("");
   const userData = React.useContext(AuthContext);
-  //   const username = userData ? userData.username : "";
-  //   // const [uid, setUid] = useState("");
-  //   const uid = userData ? userData.uid : "";
+
   const [profilePic, setProfilePic] = useState(
     "https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"
   );
@@ -28,7 +26,10 @@ function Navbar() {
   if (userData && username === "") {
     setUsername(userData.username);
     setUid(userData.uid);
-    console.log(userData);
+    // If we were logged in, but now we logged out
+  } else if (!userData && uid !== "") {
+    setUsername("");
+    setUid("");
   }
 
   return (
@@ -50,7 +51,7 @@ function Navbar() {
         id="profile"
       >
         <Image borderRadius="full" boxSize="80px" src={profilePic} />
-        <Text fontSize="xl" pl="4" color="white">
+        <Text fontSize="xl" pl="4" pr="2" color="white">
           {username}
         </Text>
       </a>
@@ -58,10 +59,6 @@ function Navbar() {
         <Button
           onClick={() => {
             logout();
-
-            // if (logout()) {
-            //   navigate("/login");
-            // }
           }}
         >
           Logout

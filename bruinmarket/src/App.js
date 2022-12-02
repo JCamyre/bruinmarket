@@ -49,8 +49,11 @@ function App() {
       console.log(data);
       return data;
     }
+    // Can set context here
     if (userUID) {
       getUserData(userUID).then((data) => setData(data));
+    } else {
+      setData(null);
     }
   }, [userUID]);
   return (
