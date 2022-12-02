@@ -232,15 +232,15 @@ function Post() {
       <Spacer />
       <Box w="35%" pl="4" color="white">
         {/* BUYER POV */}
-        {post && post.bought_uid === null ? (
-          <Heading size="2xl" lineHeight={1}>
-            {post ? post.title : ""}
-          </Heading>
-        ) : (
+        {/* {post && post.bought_uid === null ? ( */}
+        <Heading size="2xl" lineHeight={1}>
+          {post ? post.title : ""}
+        </Heading>
+        {/* ) : (
           <Heading size="2xl" lineHeight={1} color="red">
             {post ? post.title + " - SOLD!" : ""}
           </Heading>
-        )}
+        )} */}
         {/* {post && user && post.bought_uid && post.bought_uid === user.uid && (
           <Box>
             <Heading size="2xl" lineHeight={1} color="orange.400">

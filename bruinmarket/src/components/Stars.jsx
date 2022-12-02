@@ -13,7 +13,7 @@ import { getSlideTransition } from "@chakra-ui/react";
 var totalReviews = 0;
 
 function Stars({ uid, displayOnly }) {
-  const [stars, setStars] = useState(0);
+  const [stars, setStars] = useState(null);
   //const [userData, setData] = useState(null);
   // const [dataName, setDataName] = useState(null);
 
@@ -31,16 +31,28 @@ function Stars({ uid, displayOnly }) {
         console.log(doc.id, " => ", doc.data());
         stars = doc.data().rating;
         totalReviews = doc.data().numReviews;
+        if (isNaN(stars)) {
+          stars = 0;
+        }
+        totalReviews = doc.data().numReviews;
+        if (isNaN(totalReviews)) {
+          totalReviews = 0;
+        }
       });
-      console.log("Stars: ", stars, typeof stars);
-      return stars;
+      console.log(
+        "Stars we are in getStars: ",
+        stars,
+        typeof stars,
+        Number.isNaN(stars)
+      );
+      setStars(stars);
     }
-    if (!stars) {
-      getStars().then((stars) => {
-        setStars(stars);
+    if (stars === null) {
+      getStars().then(() => {
+        console.log("we are updating stars: ", stars);
       });
     }
-  }, []);
+  });
 
   async function updateStars(newRating) {
     console.log("Function running");
@@ -53,8 +65,15 @@ function Stars({ uid, displayOnly }) {
       docID = doc.id;
       console.log(doc.id, " => ", doc.data());
       stars = doc.data().rating;
+      if (isNaN(stars)) {
+        stars = 0;
+      }
       totalReviews = doc.data().numReviews;
+      if (isNaN(totalReviews)) {
+        totalReviews = 0;
+      }
     });
+    console.log("# of stars in side function: ", stars, totalReviews);
     stars = (stars * totalReviews + newRating) / (totalReviews + 1);
     totalReviews = totalReviews + 1;
 
@@ -67,11 +86,13 @@ function Stars({ uid, displayOnly }) {
     // Update User's total reviews and newRating with this uid
   }
 
+  console.log("# of stars: ", stars, typeof stars, Number.isNaN(stars));
+
   return (
     <div>
       <StarRatings
-        rating={stars}
-        changeRating={displayOnly ? null : (stars) => updateStars(stars)}
+        rating={stars ? stars : 0}
+        changeRating={(stars) => updateStars(stars)}
         starHoverColor="yellow"
         starRatedColor="yellow"
       />

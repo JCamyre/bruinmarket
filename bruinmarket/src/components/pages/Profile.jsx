@@ -109,7 +109,7 @@ function Profile() {
             </Heading>
           </Center>
           <Center>
-            <Stars uid={user ? user.uid : ""} displayOnly={true} />
+            <Stars uid={user ? user.uid : ""} />
           </Center>
         </VStack>
         <VStack>
