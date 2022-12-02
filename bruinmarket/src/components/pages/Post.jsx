@@ -128,18 +128,14 @@ function Post() {
       <Spacer />
       <Box w="35%" pl="4" color="white">
         <Text fontSize="2xl">{post.title}</Text>
-        <Text fontSize="lg">{post.price}</Text>
-        <Text fontSize="sm">Listed a day ago in Sacramento, CA</Text>
-
-        <Heading size="md">Details</Heading>
-        <Heading size="xs">Condition - New</Heading>
+        <Text fontSize="lg">{`$${parseFloat(post.price).toFixed(2).toString()}`}</Text>
         <Text fontSize="md">Description</Text>
         <Text fontSize="md">{post.summary}</Text>
         {/* If we have to use a location thing, try this: https://www.openstreetmap.org/copyright */}
         <hr />
         <Heading size="md">Seller Information</Heading>
         <VStack display="flex" justifyContent={"left"}>
-        {currentUser.uid !== post.uid ?
+        {currentUser?.uid !== post?.uid ?
           <>
           <Text fontSize="xl">{user.username}</Text>
           <Text fontSize="xl">Contact me at: {user.email}</Text>
