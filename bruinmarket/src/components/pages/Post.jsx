@@ -65,6 +65,7 @@ function ChangePosition({ latitude, longitude }) {
 function Post() {
   const { postId } = useParams();
   const currentUser = React.useContext(AuthContext);
+  console.log("Current: ", currentUser);
   const [latitude, setLatitude] = useState(34.0725);
   const [longitude, setLongitude] = useState(-118.4522);
 
@@ -103,7 +104,6 @@ function Post() {
     let seller;
     console.log("QUERY SNAPSHOT: ", querySnapshot);
     querySnapshot.forEach((doc) => {
-      console.log("FUCK ME ", doc.data());
       seller = doc.data();
     });
     console.log("funny funny", seller);
@@ -154,8 +154,6 @@ function Post() {
     });
   }, []);
 
-  console.log("SELLLERRERE", seller);
-
   console.log(`CurID is ${postId}`);
   useEffect(() => {
     const listRef = ref(storage, postId);
@@ -171,10 +169,6 @@ function Post() {
     getImages(listRef).then(async (res) => {
       console.log("fdafdsafdsafds");
       const results = await Promise.all(res);
-      console.log(
-        "RESULFDJKSLA;FDSLAFDJSALFDSSADUCMCUCM CUCMCUC CUCCUM",
-        results
-      );
     });
   }, []);
 
@@ -247,13 +241,13 @@ function Post() {
             {post ? post.title + " - SOLD!" : ""}
           </Heading>
         )}
-        {post && user && post.bought_uid === user.uid && (
+        {/* {post && user && post.bought_uid && post.bought_uid === user.uid && (
           <Box>
             <Heading size="2xl" lineHeight={1} color="orange.400">
               YOU HAVE BOUGHT THIS ITEM! Please rate your seller!
             </Heading>
           </Box>
-        )}
+        )} */}
         {/* SELLER POV */}
         {post && user && post.uid === user.uid && post.bought_uid && (
           <Box>
@@ -322,55 +316,54 @@ function Post() {
             )
           ) : (
             <TableContainer>
-            <Table>
-              <Thead>
-                <Tr>
-                  <Th>Username</Th>
-                  <Th>Bid price</Th>
-                  <Th> </Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {Object.keys(currBids).length !== 0 ||
-                Object.keys(currBidsUsernames).length !== 0 ? (
-                  Object.keys(currBids).map((user) => {
-                    return (
-                      <Tr>
-                        <Td>{`${currBidsUsernames[user]}`}</Td>
-                        <Td>{`$${currBids[user].toFixed(2).toString()}`}</Td>
-                        <Td>
-                          {soldTo !== null ? (
-                            soldTo === user ? (
-                              "Sold \u2713"
-                            ) : (
-                              ""
-                            )
-                          ) : (
-                            <Button
-                              color="purple.300"
-                              onClick={() => {
-                                setSold(user);
-                                console.log(soldTo);
-                                finalizeSale(postId, user);
-                              }}
-                            >
-                              Accept bid
-                            </Button>
-                          )}
-                        </Td>
-                      </Tr>
-                    );
-                  })
-                ) : (
+              <Table>
+                <Thead>
                   <Tr>
-                    <Td>No bids yet</Td>
+                    <Th>Username</Th>
+                    <Th>Bid price</Th>
+                    <Th> </Th>
                   </Tr>
-                )}
-              </Tbody>
-            </Table>
-          </TableContainer>
+                </Thead>
+                <Tbody>
+                  {Object.keys(currBids).length !== 0 ||
+                  Object.keys(currBidsUsernames).length !== 0 ? (
+                    Object.keys(currBids).map((user) => {
+                      return (
+                        <Tr>
+                          <Td>{`${currBidsUsernames[user]}`}</Td>
+                          <Td>{`$${currBids[user].toFixed(2).toString()}`}</Td>
+                          <Td>
+                            {soldTo !== null ? (
+                              soldTo === user ? (
+                                "Sold \u2713"
+                              ) : (
+                                ""
+                              )
+                            ) : (
+                              <Button
+                                color="purple.300"
+                                onClick={() => {
+                                  setSold(user);
+                                  console.log(soldTo);
+                                  finalizeSale(postId, user);
+                                }}
+                              >
+                                Accept bid
+                              </Button>
+                            )}
+                          </Td>
+                        </Tr>
+                      );
+                    })
+                  ) : (
+                    <Tr>
+                      <Td>No bids yet</Td>
+                    </Tr>
+                  )}
+                </Tbody>
+              </Table>
+            </TableContainer>
           )}
-          
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
 
