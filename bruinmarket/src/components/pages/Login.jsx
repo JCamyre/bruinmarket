@@ -11,7 +11,6 @@ function Login() {
   const navigate = useNavigate();
 
   const getStatusMessage = (status) => {
-    console.log(status);
     switch (status) {
       case 0:
         return `Logging in ...`;
@@ -61,9 +60,7 @@ function Login() {
               <Button type="submit">Sign in</Button>
             </Link>
 
-            <Link href="/testregister">
-              Don't have an account, register here!
-            </Link>
+            <Link href="/register">Don't have an account, register here!</Link>
 
             <Text color="red"> {getStatusMessage(loginStatus)} </Text>
           </Stack>

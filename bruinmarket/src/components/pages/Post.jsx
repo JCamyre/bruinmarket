@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -14,10 +14,14 @@ import {
   Link,
   Spacer,
 } from "@chakra-ui/react";
+import { AuthContext } from "../../App";
 import "./Post.css";
 
 function Post() {
   const { id } = useParams();
+
+  const currentUser = React.useContext(AuthContext);
+
   // get User based on the Post id
   const [post, setPost] = useState({
     uid: "1324320983201fdasdsafdjaf",
@@ -25,11 +29,21 @@ function Post() {
     price: "$1000",
     summary:
       "fdkasfkldjasfkldsakldsajfdsajfkdsajfsdafdsakfjdlsafdsafdsafkdsafadsfdasfdasfdlf",
+    bought_uid: currentUser ? currentUser.uid : "",
   });
   const [user, setUser] = useState({
     uid: "1324320983201fdasdsafdjaf",
     username: "pandalover69",
+    email: "jwcamry03@gmail.com",
   });
+
+  useEffect(() => {
+    const updatedPost = post;
+    updatedPost["bought_uid"] = currentUser.uid;
+    setPost(updatedPost);
+  }, [currentUser]);
+
+  // if you are looking at a post that you bought
 
   return (
     <Container
@@ -48,18 +62,16 @@ function Post() {
           infiniteLoop={true}
           showIndicators={false}
           showStatus={false}
+          borderRadius={24}
         >
           <div>
             <Img src="https://imgs.search.brave.com/iDWBRAOg5OxWbGv_P4lkcXBZQ6__WvX4XEljLG9FP_A/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9zYmx5/LXdlYi1wcm9kLXNo/YXJlYWJseS5uZXRk/bmEtc3NsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyMC8w/Ny8xNTIwNTMxOC9z/aWQtYmFsYWNoYW5k/cmFuLV85YS0zTk81/S0pFLXVuc3BsYXNo/LmpwZw" />
-            {/* <p>Panda 1</p> */}
           </div>
           <div>
             <Img src="https://imgs.search.brave.com/Dghzc_7RTRGKdeVmWN5zRL0tV24jSh8-1XXp9SvSveg/rs:fit:1200:900:1/g:ce/aHR0cHM6Ly9hc2tn/YW1lci5jb20vd3At/Y29udGVudC91cGxv/YWRzLzIwMjEvMDQv/QnJlZWQtUGFuZGFz/LmpwZw" />
-            {/* <p>Minecraft Panda</p> */}
           </div>
           <div>
             <Img src="https://imgs.search.brave.com/Us-94VJX9bkGOxLCqzLhUYllfI9NMAs0IUj9dbpd_TM/rs:fit:1158:693:1/g:ce/aHR0cHM6Ly9zdGF0/aWMucGxhbmV0bWlu/ZWNyYWZ0LmNvbS9m/aWxlcy9yZXNvdXJj/ZV9tZWRpYS9zY3Jl/ZW5zaG90LzE5MjMv/My0xNTU5NzkwMzg2/X2xyZy5wbmc" />
-            {/* <p>Cursed Panda</p> */}
           </div>
         </Carousel>
       </Box>
@@ -78,12 +90,16 @@ function Post() {
         <Heading size="md">Seller Information</Heading>
         <VStack display="flex" justifyContent={"left"}>
           <Text fontSize="xl">{user.username}</Text>
+          <Text fontSize="xl">Contact me at: {user.email}</Text>
           <a href={`profile/${user.uid}`}>
-            <Button>View Profile</Button>
+            <Button color="purple.300">View Profile</Button>
           </a>
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
-        <Text fontSize="lg">&#9733;&#9733;&#9733;&#9733;&#9733;</Text>
+        <Text>{post.bought_uid}</Text>
+        {post.bought_uid && currentUser.uid && (
+          <Text fontSize="lg">&#9733;&#9733;&#9733;&#9733;&#9733;</Text>
+        )}
       </Box>
     </Container>
   );
