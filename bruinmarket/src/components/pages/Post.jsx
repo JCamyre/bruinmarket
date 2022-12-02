@@ -139,11 +139,13 @@ function Post() {
         <hr />
         <Heading size="md">Seller Information</Heading>
         <VStack display="flex" justifyContent={"left"}>
+        {currentUser.uid !== post.uid ?
+          <>
           <Text fontSize="xl">{user.username}</Text>
           <Text fontSize="xl">Contact me at: {user.email}</Text>
           <a href={`profile/${user.uid}`}>
             <Button color="purple.300">View Profile</Button>
-          </a>
+          </a></> : <Text> You are the seller </Text>}
           { (user !== {} && post !== {}) ? (user?.uid !== post?.uid) ? //if not user who submitted post, give option to submit bid
           (!soldTo ?
           <form onSubmit={Submit} method="POST">
@@ -178,7 +180,7 @@ function Post() {
                 </Tr>
               </Thead>
               <Tbody>
-              {(currBids !== {} && currBidsUsernames !== {}) && Object.keys(currBids).map(user => {
+              {(!currBids && !currBidsUsernames) ? Object.keys(currBids).map(user => {
                 return (
                   <Tr>
                       <Td>{`${currBidsUsernames[user]}`}</Td> 
@@ -195,15 +197,13 @@ function Post() {
                       </Td>
                   </Tr>
                 )
-              })}
+              }) : <Tr><Td>No bids yet</Td></Tr>}
               </Tbody>
               </Table>
             </TableContainer>
           : null
           }
         </VStack>
-        <hr />
-
         {/* https://openbase.com/js/react-star-ratings */}
         <Text>{post.bought_uid}</Text>
         {post.bought_uid && currentUser.uid && (
