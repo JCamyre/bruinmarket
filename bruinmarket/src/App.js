@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/pages/Login.jsx";
 import ProtectedRoute from "./utilities/ProtectedRoute";
 import { auth, firestore, database } from "./firebase";
+import {getUserData} from "./utilities/Posts"
 
 const AuthContext = React.createContext(null);
 
@@ -35,20 +36,6 @@ function App() {
     });
   }, []); //useEffect prevents onAuthStateChanged listener from being set multiple times
   React.useEffect(() => {
-    async function getUserData(uid) {
-      const q = firestore.query(
-        firestore.collection(database, "users"),
-        firestore.where("uid", "==", uid)
-      );
-      const docs = await firestore.getDocs(q);
-      let data = null;
-      docs.forEach((doc) => {
-        // console.log(doc.data().username)
-        data = doc.data();
-      });
-      console.log(data);
-      return data;
-    }
     if (userUID) {
       getUserData(userUID).then((data) => setData(data));
     }

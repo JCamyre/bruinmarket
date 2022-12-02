@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { addUserBid, getBids } from "../../utilities/Posts"
+import { addUserBid, getBids, getPostData, getUserData } from "../../utilities/Posts"
 import {
   Container,
   Box,
@@ -38,27 +38,18 @@ function Post() {
   }
 
   // get User based on the Post id
-  const [post, setPost] = useState({
-    uid: "1324320983201fdasdsafdjaf",
-    title: "1994 Honda Civic",
-    price: "$1000",
-    summary:
-      "fdkasfkldjasfkldsakldsajfdsajfkdsajfsdafdsakfjdlsafdsafdsafkdsafadsfdasfdasfdlf",
-    bought_uid: currentUser ? currentUser.uid : "",
-  });
-  const [user, setUser] = useState({
-    uid: "1324320983201fdasdsafdjaf",
-    username: "pandalover69",
-    email: "jwcamry03@gmail.com",
-  });
+  const [post, setPost] = useState({});
+  const [user, setUser] = useState({});
   const [bid, setBid] = useState(null)
   const [bidStatus, setStatus] = useState("")
   const [currBids, setBids] = useState({})
+  const [currBidsUsernames, setUsernames] = useState({})
 
   useEffect(() => {
     const updatedPost = post;
     if (currentUser) {
       updatedPost["bought_uid"] = currentUser.uid;
+      getUserData(currentUser.uid).then(e => setUser(e))
     }
     setPost(updatedPost);
   }, [currentUser]);
@@ -67,6 +58,15 @@ function Post() {
     console.log(id)
     getBids(id).then(e => setBids(e))
     console.log(currBids)
+    getPostData(id).then(e => setPost(e))
+    let currentBids = {}
+    for (var user in currBids) {
+      getUserData(user).then(e => {
+        const bidderUsername = e.username
+        currentBids[user] = bidderUsername 
+      })
+    }
+    setUsernames(currentBids)
   }, [])
   
   // if you are looking at a post that you bought
@@ -120,7 +120,7 @@ function Post() {
           <a href={`profile/${user.uid}`}>
             <Button color="purple.300">View Profile</Button>
           </a>
-          { (currentUser?.uid !== post.uid) ? //if not user who submitted post, give option to submit bid
+          { (user?.uid !== post.uid) ? //if not user who submitted post, give option to submit bid
           <form onSubmit={Submit} method="POST">
             <VStack spacing="2">
               <InputGroup>
@@ -144,17 +144,19 @@ function Post() {
           </form>
           : //if user is seller
             <Box>
-              {currBids ? Object.keys(currBids).map(user => {
+              {(currBids && currBidsUsernames) ? Object.keys(currBids).map(user => {
                 console.log(currBids[user])
                 return (
                   <div>
-                  <Text>{`${user}, ${currBids[user]}`}</Text>
+                  <Text>{`${currBidsUsernames[user]}, ${currBids[user]}`}</Text>
                   </div>
                 )
               }): null}
             </Box>
           }
         </VStack>
+        <hr />
+
         {/* https://openbase.com/js/react-star-ratings */}
         <Text>{post.bought_uid}</Text>
         {post.bought_uid && currentUser.uid && (

@@ -56,4 +56,32 @@ const getBids = async (postID) => {
     return bids
 }
 
-export {getCategoryPosts, addUserBid, finalizeSale, getBids};
+const getPostData = async (postID) => {
+    const q = firestore.query(
+        firestore.collection(database, "posts"),
+        firestore.where("post_id", "==", postID)
+    );
+    const docs = await firestore.getDocs(q);
+    let target = null;
+    docs.forEach((doc) => {
+      target = doc.data()
+    })
+    return target
+}
+
+async function getUserData(uid) {
+    const q = firestore.query(
+      firestore.collection(database, "users"),
+      firestore.where("uid", "==", uid)
+    );
+    const docs = await firestore.getDocs(q);
+    let data = null;
+    docs.forEach((doc) => {
+      // console.log(doc.data().username)
+      data = doc.data();
+    });
+    console.log(data);
+    return data;
+  }
+
+export {getCategoryPosts, addUserBid, finalizeSale, getBids, getPostData, getUserData};
