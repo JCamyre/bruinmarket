@@ -82,6 +82,10 @@ function CreatePost() {
       setStatus(2);
       return;
     }
+    if (price < 0) {
+      setStatus(2)
+      return;
+    }
     setStatus(3);
     const docRef = await addDoc(collection(database, "posts"), {
       uid: userData.uid,
