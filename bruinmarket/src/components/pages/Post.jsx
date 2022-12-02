@@ -34,15 +34,9 @@ function Post() {
   const { postId } = useParams();
   const currentUser = React.useContext(AuthContext);
 
-  const [post, setPost] = useState({
-    uid: "",
-    title: "",
-    price: "",
-    category: "",
-    summary: "",
-    bought_uid: "",
-  });
+  const [post, setPost] = useState(null);
   const [user, setUser] = useState(null);
+  const [seller, setSeller] = useState(null);
 
   const [images, setImages] = useState([]);
 
@@ -50,40 +44,53 @@ function Post() {
     setUser(currentUser);
   }
 
+  async function findSeller(uid) {
+    console.log("Function running");
+    //setTotalReviews(totalReviews + 1);
+    const q = query(collection(database, "users"), where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+    let seller;
+    console.log("QUERY SNAPSHOT: ", querySnapshot);
+    querySnapshot.forEach((doc) => {
+      console.log("FUCK ME ", doc.data());
+      seller = doc.data();
+    });
+    console.log("funny funny", seller);
+    setSeller(seller);
+  }
+
+  if (post && seller === null) {
+    console.log("POST UID: ", post.uid, post);
+    findSeller(post.uid);
+  }
+
+  console.log("SELLLERRERE", seller);
+
   console.log(`CurID is ${postId}`);
   useEffect(() => {
-    let tempArr = [];
     const listRef = ref(storage, postId);
-    listAll(listRef)
-      .then((res) => {
-        res.items.forEach((itemRef) => {
-          // All the items under listRef.
-          getDownloadURL(ref(storage, itemRef.fullPath))
-            .then((url) => {
-              // `url` is the download URL for 'images/stars.jpg'
-              console.log(url);
-              tempArr.push(url);
-              // Or inserted into an <img> element
 
-              // THIS IS JUST <img src={url} />
-              // FDJSALFDJLSKAJFDLSALKFDSAKLFJDSLKAJFDLSAF
-              // FDSAFDSAFDSAFDSAFDSAFDSAFSS
-              // const img = document.getElementById("myimg");
-              // img.setAttribute("src", url);
-            })
-            .catch((error) => {
-              // Handle any errors
-              console.log("didnt work");
-            });
+    async function getImages(listRef) {
+      listAll(listRef).then((res) => {
+        let promises = res.items.map((imageRef) => getDownloadURL(imageRef));
+        Promise.all(promises).then((urls) => {
+          setImages(urls);
         });
-      })
-      .catch((error) => {
-        // Uh-oh, an error occurred!
-        console.log("messed up");
       });
-    console.log("Temp array: ", tempArr);
+    }
+    getImages(listRef).then(async (res) => {
+      console.log("fdafdsafdsafds");
+      const results = await Promise.all(res);
+      console.log(
+        "RESULFDJKSLA;FDSLAFDJSALFDSSADUCMCUCM CUCMCUC CUCCUM",
+        results
+      );
+    });
 
-    setImages(tempArr);
+    // getImages(listRef).then((images) => {
+    //   console.log("ImGEAEAFEAFEAFSD: ", images);
+    //   setImages(images);
+    // });
   }, []);
 
   console.log(images);
@@ -116,6 +123,7 @@ function Post() {
     <Container
       display="flex"
       maxW="container.xl"
+      maxH="100%"
       // bg="#eee"
       bg="purple.300"
       borderRadius="16"
@@ -124,7 +132,7 @@ function Post() {
       mb="8"
       boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
     >
-      <Box w="60%">
+      <Box w="60%" minH="100vh">
         <Carousel
           showArrows={true}
           infiniteLoop={true}
@@ -132,54 +140,66 @@ function Post() {
           showStatus={false}
           borderRadius={24}
         >
-          <div>
-            <img src="https://imgs.search.brave.com/iDWBRAOg5OxWbGv_P4lkcXBZQ6__WvX4XEljLG9FP_A/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9zYmx5/LXdlYi1wcm9kLXNo/YXJlYWJseS5uZXRk/bmEtc3NsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyMC8w/Ny8xNTIwNTMxOC9z/aWQtYmFsYWNoYW5k/cmFuLV85YS0zTk81/S0pFLXVuc3BsYXNo/LmpwZw" />
-          </div>
-          <div>
-            <img src="https://imgs.search.brave.com/Dghzc_7RTRGKdeVmWN5zRL0tV24jSh8-1XXp9SvSveg/rs:fit:1200:900:1/g:ce/aHR0cHM6Ly9hc2tn/YW1lci5jb20vd3At/Y29udGVudC91cGxv/YWRzLzIwMjEvMDQv/QnJlZWQtUGFuZGFz/LmpwZw" />
-          </div>
-          <div>
-            <img src="https://imgs.search.brave.com/Us-94VJX9bkGOxLCqzLhUYllfI9NMAs0IUj9dbpd_TM/rs:fit:1158:693:1/g:ce/aHR0cHM6Ly9zdGF0/aWMucGxhbmV0bWlu/ZWNyYWZ0LmNvbS9m/aWxlcy9yZXNvdXJj/ZV9tZWRpYS9zY3Jl/ZW5zaG90LzE5MjMv/My0xNTU5NzkwMzg2/X2xyZy5wbmc" />
-          </div>
+          {images &&
+            images.map((image) => (
+              <div key={image}>
+                <Img src={image} maxH="500px" maxW="300px" />
+              </div>
+            ))}
         </Carousel>
       </Box>
       <Spacer />
       <Box w="35%" pl="4" color="white">
-        <Heading size="2xl" lineHeight={2}>
-          {post ? post.title : ""}
-        </Heading>
+        {/* BUYER POV */}
+        {post && post.bought_uid === null ? (
+          <Heading size="2xl" lineHeight={1}>
+            {post ? post.title : ""}
+          </Heading>
+        ) : (
+          <Heading size="2xl" lineHeight={1} color="red">
+            {post ? post.title + " - SOLD!" : ""}
+          </Heading>
+        )}
+        {post && user && post.bought_uid === user.uid && (
+          <Box>
+            <Heading size="2xl" lineHeight={1} color="orange.400">
+              YOU HAVE BOUGHT THIS ITEM! Please rate your seller!
+            </Heading>
+            <Stars uid={post ? post.uid : ""} />
+          </Box>
+        )}
+        {/* SELLER POV */}
+        {post && user && post.uid === user.uid && post.bought_uid && (
+          <Box>
+            <Heading size="2xl" lineHeight={1} color="orange.400">
+              Rate your buyer!
+            </Heading>
+            <Stars uid={post ? post.bought_uid : ""} />
+          </Box>
+        )}
+
         <Text fontSize="2xl" lineHeight={2}>
           Price: ${post ? post.price : ""}
         </Text>
         <Heading size="lg">Category</Heading>
         <Text fontSize="2xl">{post ? post.category : ""}</Text>
-        {/* <Text fontSize="sm">Listed a day ago in Sacramento, CA</Text> */}
 
-        {/* <Heading size="lg">Details</Heading> */}
-        {/* <Heading size="xs">Condition - New</Heading> */}
         <Heading size="lg">Description</Heading>
         <Text fontSize="2xl" lineHeight="8">
           {post ? post.summary : ""}
         </Text>
-        {/* If we have to use a location thing, try this: https://www.openstreetmap.org/copyright */}
+
         <hr />
         <Heading size="lg">Seller Information</Heading>
         <VStack display="flex" justifyContent="left">
-          <Text fontSize="xl">{user ? user.username : ""}</Text>
-          <Text fontSize="xl">Contact me at: {user ? user.email : ""}</Text>
-          <a href={`/profile/${user ? user.uid : ""}`}>
+          <Text fontSize="xl">{seller ? seller.username : ""}</Text>
+          <Text fontSize="xl">Contact me at: {seller ? seller.email : ""}</Text>
+          <a href={`/profile/${seller ? seller.uid : ""}`}>
             <Button color="purple.300">View Profile</Button>
           </a>
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
-        <Stars displayOnly={true} />
-
-        {images.map((image) => (
-          <div key={image}>
-            <img src={image} />
-            <p>test</p>
-          </div>
-        ))}
+        <Stars displayOnly={true} uid={post ? post.uid : ""} />
       </Box>
     </Container>
   );
