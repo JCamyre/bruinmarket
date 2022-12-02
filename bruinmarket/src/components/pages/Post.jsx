@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { addUserBid } from "../../utilities/Posts"
+import { addUserBid, getBids } from "../../utilities/Posts"
 import {
   Container,
   Box,
@@ -28,7 +28,7 @@ function Post() {
 
   async function Submit(e) {
     e.preventDefault();
-    if (!isNaN(+bid)) {
+    if (!isNaN(+bid) && bid !== "" && bid !== null) {
       setStatus("Successfully submitted/updated bid");
       const valueToSubmit = parseFloat(bid)
       await addUserBid(id, currentUser.uid, valueToSubmit)
@@ -53,6 +53,7 @@ function Post() {
   });
   const [bid, setBid] = useState(null)
   const [bidStatus, setStatus] = useState("")
+  const [currBids, setBids] = useState({})
 
   useEffect(() => {
     const updatedPost = post;
@@ -62,7 +63,11 @@ function Post() {
     setPost(updatedPost);
   }, [currentUser]);
 
-  const bids = {'user1': 123, 'user2': 42342, 'user3': 422};
+  useEffect(() => {
+    console.log(id)
+    getBids(id).then(e => setBids(e))
+    console.log(currBids)
+  }, [])
   
   // if you are looking at a post that you bought
 
@@ -138,20 +143,18 @@ function Post() {
             </VStack>
           </form>
           : //if user is seller
-            null
+            <Box>
+              {currBids ? Object.keys(currBids).map(user => {
+                console.log(currBids[user])
+                return (
+                  <div>
+                  <Text>{`${user}, ${currBids[user]}`}</Text>
+                  </div>
+                )
+              }): null}
+            </Box>
           }
         </VStack>
-        <Box>
-          {Object.keys(bids).map(user => {
-            console.log(bids[user])
-            return (
-              <div>
-              <Text>test</Text>
-              </div>
-            )
-
-})}
-        </Box>
         {/* https://openbase.com/js/react-star-ratings */}
         <Text>{post.bought_uid}</Text>
         {post.bought_uid && currentUser.uid && (

@@ -38,4 +38,22 @@ const finalizeSale = async (postID, uid) => {
     await updatePostData(postID, uid, "bought_uid", uid)
 }
 
-export {getCategoryPosts, addUserBid, finalizeSale};
+const getBids = async (postID) => {
+    const q = firestore.query(
+        firestore.collection(database, "posts"),
+        firestore.where("post_id", "==", postID)
+    );
+    const docs = await firestore.getDocs(q);
+    let target = null;
+    docs.forEach((doc) => {
+      target = doc.data()
+    })
+    let bids = {}
+    for (var user in target.offers) {
+        bids[user] = target.offers[user]
+        console.log(bids)
+    }
+    return bids
+}
+
+export {getCategoryPosts, addUserBid, finalizeSale, getBids};
