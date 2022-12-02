@@ -27,6 +27,7 @@ function Profile() {
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [boughtPosts, setBoughtPosts] = useState([]);
   useEffect(() => {
     async function getUser() {
       const query = await firestore.query(
@@ -51,16 +52,35 @@ function Profile() {
       const docs = await firestore.getDocs(query);
       const posts = [];
       docs.forEach((doc) => {
-        console.log(doc);
+        //console.log(doc);
         posts.push(doc.data());
       });
       setPosts(posts);
     }
     getUserPosts();
+    async function getUserBoughtPosts() {
+      const query = await firestore.query(
+        firestore.collection(database, "posts"),
+        firestore.where("bought_uid", "==", uid)
+      );
+      const docs = await firestore.getDocs(query);
+      const boughtPosts = [];
+      docs.forEach((doc) => {
+        console.log(doc);
+        boughtPosts.push(doc.data());
+      });
+      console.log('Bought posts: ', boughtPosts)
+      setBoughtPosts(boughtPosts);
+    }
+    getUserBoughtPosts();  
+    
   }, [uid]);
+
+
 
   // const userData = useContext(AuthContext);
   console.log(posts);
+  console.log(boughtPosts);
   const username = user ? user.username : "";
   // const username = userData ? userData.username : "User";
 
