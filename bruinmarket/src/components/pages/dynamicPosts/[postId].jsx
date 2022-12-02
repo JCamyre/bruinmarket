@@ -20,6 +20,7 @@ const PostPage = () => {
         
     })
     const {postId} = useParams()
+    // <Route path="/post/:id" element={}
 
     // const {
     //     query: { postId },

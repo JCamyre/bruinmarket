@@ -7,12 +7,15 @@ import AllPosts from "./components/pages/AllPosts.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import axios from 'axios'
 
+
 import { app, auth, database, authentication, firestore, initializeApp } from './firebase'
 import { collection, getDocs } from "firebase/firestore";
 import FetchPosts from "./components/pages/FetchPosts";
-// import firebase from "./firebase"
-// import db from "firebase/database"
-// import '@firebase/auth'
+import PostCard from "./components/pages/PostCard.jsx";
+// import {PostIdDetails} from "./components/pages/PostIdDetails";
+import PostId from "./components/pages/PostId";
+import { useParams } from "react-router-app";
+
 
 
 function App() {
@@ -42,21 +45,6 @@ function App() {
   //   })()
   // }, []);
 
-
-
-         // OLD
-  // function getPostsFromFirebase() {
-  //   ref.onSnapshot((querySnapshot) => {
-  //     const items = [];
-  //     querySnapshot.forEach((doc) => {
-  //       items.push(doc.data());
-  //     });
-  //     setPosts(items);
-  //   });
-  // }
-  // useEffect(() => {
-  //   getPostsFromFirebase();
-  // }, []);
 
   // HANDLE INFINITE SCROLLING
   const handleObserver = useCallback((entries) => {
@@ -106,6 +94,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/allposts" element={<AllPosts />} />
             <Route path="/fetchposts" element={<FetchPosts />} />
+            <Route path="post" element={<PostCard />} />
+            <Route path="post/:userId" element={<PostId />} />
 
           </Routes>
         </BrowserRouter>
