@@ -10,6 +10,7 @@ import {
   FormLabel,
   Select,
   Textarea,
+  Text
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,12 +25,37 @@ function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [category, setCategory] = useState("");
+  const [zipcode, setZipcode] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
+  const [status, setStatus] = useState(3);
   const format = (val) => `$` + val
   const parse = (val) => val.replace(/^\$/, '')
 
-  const [price, setPrice] = React.useState('5.50')
+  const getStatusMessage = (status) => {
+    switch (status) {
+      case 0:
+        return `Invalid Input: One or more empty fields`;
+      case 1:
+        return 'Invalid Zip Code';
+      case 2:
+        return 'Invalid Price';
+      default:
+        return ``;
+    }
+  };
+
+  var ziptolonglat = {
+    "90024": [34.065723, -118.434969],
+    "90025": [34.045421, -118.445873],
+    "90049": [34.092540, -118.491064],
+    "90095": [34.071200, -118.443523],
+    "90210": [34.100517, -118.414712],
+    "90077": [34.108023, -118.456964],
+    "90067": [34.057597, -118.413998]
+  };
+
+  const [price, setPrice] = React.useState("");
 
   const navigate = useNavigate();
   const userData = React.useContext(AuthContext);
@@ -44,25 +70,36 @@ function CreatePost() {
     if(userData == null){
       console.log("UserData is null u messed up")
     }
-    if(summary == "" || title == "" || category == ""){
+    if(summary === "" || title === "" || category === "" || zipcode === "" || price === ""){
+      setStatus(0);
       return;
     }
+    if (!(zipcode in ziptolonglat)) {
+      setStatus(1);
+      return;
+    }
+    if (!(!isNaN(+price) && price !== "" && price !== null && (+price) >= 0)) {
+      setStatus(2);
+      return;
+    }
+    setStatus(3);
     const docRef = await addDoc(collection(database, "posts"), {
       uid: userData.uid,
       title: title,
       summary: summary,
       category: category,
       price: price,
-      bought_uid: null
+      bought_uid: null,
+      latlongcoord: ziptolonglat[zipcode]
     });
-    
+
     // database.post(user_id, title, summary, category)
     console.log(e.target)
     const curDoc = doc(database, "posts", docRef.id);
     await updateDoc(curDoc, {
       "post_id": docRef.id,
     });
-    uploadPicture(e.target[4].files, docRef.id)
+    uploadPicture(e.target[5].files, docRef.id)
 
     // pictures we will figure out.
 
@@ -142,6 +179,10 @@ function CreatePost() {
               onChange={(e) => setPrice(e.currentTarget.value)}
             />
           </InputGroup>
+          <Input
+            placeholder="Postal Code"
+            onChange={(e) => setZipcode(e.currentTarget.value)}
+          />
       
           <Input
             type="file"
@@ -152,6 +193,7 @@ function CreatePost() {
           <Button type="submit" maxW="sm">
             Post!
           </Button>
+          <Text color="red"> {getStatusMessage(status)} </Text>
         </Stack>
       </form>
     </Container>
