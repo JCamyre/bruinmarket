@@ -28,14 +28,18 @@ function CreatePost() {
   const [zipcode, setZipcode] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(3);
   const format = (val) => `$` + val
   const parse = (val) => val.replace(/^\$/, '')
 
   const getStatusMessage = (status) => {
     switch (status) {
       case 0:
-        return `Empty Field or Incorrect Zip Code`;
+        return `Invalid Input: One or more empty fields`;
+      case 1:
+        return 'Invalid Zip Code';
+      case 2:
+        return 'Invalid Price';
       default:
         return ``;
     }
@@ -51,7 +55,7 @@ function CreatePost() {
     "90067": [34.057597, -118.413998]
   };
 
-  const [price, setPrice] = React.useState('');
+  const [price, setPrice] = React.useState("");
 
   const navigate = useNavigate();
   const userData = React.useContext(AuthContext);
@@ -66,15 +70,19 @@ function CreatePost() {
     if(userData == null){
       console.log("UserData is null u messed up")
     }
-    if(summary === "" || title === "" || category === "" || !(zipcode in ziptolonglat)){
+    if(summary === "" || title === "" || category === "" || zipcode === "" || price === ""){
       setStatus(0);
       return;
     }
-    if (!(!isNaN(+price) && price !== "" && price !== null)) {
-      setStatus(0);
+    if (!(zipcode in ziptolonglat)) {
+      setStatus(1);
       return;
     }
-    setStatus(1);
+    if (!(!isNaN(+price) && price !== "" && price !== null && (+price) >= 0)) {
+      setStatus(2);
+      return;
+    }
+    setStatus(3);
     const docRef = await addDoc(collection(database, "posts"), {
       uid: userData.uid,
       title: title,
