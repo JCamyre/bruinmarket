@@ -19,6 +19,16 @@ import {
   Heading,
   Link,
   Spacer,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Table,
+  TableContainer,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
 } from "@chakra-ui/react";
 import { AuthContext } from "../../App";
 import "./Post.css";
@@ -32,6 +42,14 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import {
+  addUserBid,
+  getBids,
+  getPostData,
+  getUserData,
+  finalizeSale,
+  getBuyer,
+} from "../../utilities/Posts";
 
 const myIcon = new Icon({
   iconUrl: marker,
@@ -56,8 +74,25 @@ function Post() {
 
   const [images, setImages] = useState([]);
 
+  const [bid, setBid] = useState(null);
+  const [bidStatus, setStatus] = useState("");
+  const [currBids, setBids] = useState({});
+  const [currBidsUsernames, setUsernames] = useState({});
+  const [soldTo, setSold] = useState(null);
+
   if (currentUser && !user) {
     setUser(currentUser);
+  }
+
+  async function Submit(e) {
+    e.preventDefault();
+    if (!isNaN(+bid) && bid !== "" && bid !== null) {
+      setStatus("Successfully submitted/updated bid");
+      const valueToSubmit = parseFloat(bid);
+      await addUserBid(postId, currentUser.uid, valueToSubmit);
+    } else {
+      setStatus("Invalid bid. Please re-enter");
+    }
   }
 
   async function findSeller(uid) {
@@ -79,6 +114,45 @@ function Post() {
     console.log("POST UID: ", post.uid, post);
     findSeller(post.uid);
   }
+
+  useEffect(() => {
+    const updatedPost = post;
+    if (currentUser) {
+      updatedPost["bought_uid"] = currentUser.uid;
+      getUserData(currentUser.uid).then((e) => setUser(e));
+    }
+    setPost(updatedPost);
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currBids) {
+      async function getUD() {
+        let currentBids = {};
+        for (var user in currBids) {
+          await getUserData(user).then((ud) => {
+            currentBids[user] = ud.username;
+            console.log(currentBids[user]);
+          });
+        }
+        console.log("test" + JSON.stringify(currentBids));
+        return currentBids;
+      }
+      getUD().then((ud) => setUsernames(ud));
+    }
+  }, [currBids]);
+  // if you are looking at a post that you bought
+
+  useEffect(() => {
+    getBids(postId).then((e) => {
+      setBids(e);
+    });
+    getPostData(postId).then((e) => setPost(e));
+    getBuyer(postId).then((e) => {
+      if (postId !== null) {
+        setSold(e);
+      }
+    });
+  }, []);
 
   console.log("SELLLERRERE", seller);
 
@@ -102,11 +176,6 @@ function Post() {
         results
       );
     });
-
-    // getImages(listRef).then((images) => {
-    //   console.log("ImGEAEAFEAFEAFSD: ", images);
-    //   setImages(images);
-    // });
   }, []);
 
   console.log(images);
@@ -161,7 +230,7 @@ function Post() {
           {images &&
             images.map((image) => (
               <div key={image}>
-                <Img src={image} maxH="500px" maxW="300px" />
+                <Img src={image} maxH="100%" maxW="600px" />
               </div>
             ))}
         </Carousel>
@@ -214,6 +283,94 @@ function Post() {
           <a href={`/profile/${seller ? seller.uid : ""}`}>
             <Button color="purple.300">View Profile</Button>
           </a>
+          {(user ? user.uid : "") !== (post ? post.uid : "") ? ( //if not user who submitted post, give option to submit bid
+            !soldTo ? (
+              <form onSubmit={Submit} method="POST">
+                <VStack spacing="2">
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      color="gray.300"
+                      fontSize="1.2em"
+                      children="$"
+                    />
+                    <Input
+                      placeholder="Enter a bid"
+                      onChange={(e) => setBid(e.currentTarget.value)}
+                    />
+                  </InputGroup>
+
+                  <Button type="submit" maxW="sm" color="purple.300">
+                    Submit bid
+                  </Button>
+                  <Text
+                    color={
+                      bidStatus === "Successfully submitted/updated bid"
+                        ? "green"
+                        : "red"
+                    }
+                  >
+                    {" "}
+                    {bidStatus}{" "}
+                  </Text>
+                </VStack>
+              </form>
+            ) : soldTo === currentUser.uid ? (
+              <Text color="red">{`Already sold to ${currBidsUsernames[soldTo]}`}</Text>
+            ) : (
+              <Text color="green">You already own this item</Text>
+            )
+          ) : (
+            <div></div>
+          )}
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Username</Th>
+                  <Th>Bid price</Th>
+                  <Th> </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {Object.keys(currBids).length !== 0 ||
+                Object.keys(currBidsUsernames).length !== 0 ? (
+                  Object.keys(currBids).map((user) => {
+                    return (
+                      <Tr>
+                        <Td>{`${currBidsUsernames[user]}`}</Td>
+                        <Td>{`$${currBids[user].toFixed(2).toString()}`}</Td>
+                        <Td>
+                          {soldTo !== null ? (
+                            soldTo === user ? (
+                              "Sold \u2713"
+                            ) : (
+                              ""
+                            )
+                          ) : (
+                            <Button
+                              color="purple.300"
+                              onClick={() => {
+                                setSold(user);
+                                console.log(soldTo);
+                                finalizeSale(postId, user);
+                              }}
+                            >
+                              Accept bid
+                            </Button>
+                          )}
+                        </Td>
+                      </Tr>
+                    );
+                  })
+                ) : (
+                  <Tr>
+                    <Td>No bids yet</Td>
+                  </Tr>
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
         <Stars displayOnly={true} uid={post ? post.uid : ""} />

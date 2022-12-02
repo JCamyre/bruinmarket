@@ -4,11 +4,7 @@ import { Button, HStack, VStack, Grid } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import SideBar from "../../components/SideBar";
 import { useEffect } from "react";
-import {
-  getCategoryPosts,
-  addUserBid,
-  finalizeSale,
-} from "../../utilities/Posts";
+import { getUserPosts, addUserBid, finalizeSale } from "../../utilities/Posts";
 import {
   Container,
   Box,
@@ -24,14 +20,16 @@ function Home() {
   const userData = React.useContext(AuthContext);
   const [category, setCategory] = React.useState(null);
   const [currPosts, setCurrPosts] = React.useState([]);
+  const [uid, setUid] = React.useState(null);
+
   useEffect(() => {
-    async function getPosts(category) {
-      return await getCategoryPosts(category);
+    async function getPosts(uid) {
+      return await getUserPosts(uid);
     }
-    getPosts(category).then((posts) => {
+    getPosts(userData.uid).then((posts) => {
       setCurrPosts(posts);
     });
-  }, [category]);
+  }, []);
 
   console.log("Currposts: ", currPosts, category);
 
@@ -60,6 +58,7 @@ function Home() {
                       <Box>
                         <Heading size="xl">{post.title}</Heading>
                         <Heading size="md">{post.category}</Heading>
+                        <Heading size="md">${post.price}</Heading>
                       </Box>
                     </Box>
                   </Box>

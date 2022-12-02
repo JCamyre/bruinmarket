@@ -11,6 +11,10 @@ import {
   VStack,
   StackDivider,
   Box,
+  Grid,
+  GridItem,
+  Link,
+  Img,
 } from "@chakra-ui/react";
 import profilepic from "../blank-profile-picture-gd2ddd1954_1280.png";
 import { AuthContext } from "../../App";
@@ -20,6 +24,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { stringify } from "@firebase/util";
 import Stars from "../Stars";
+import { getCategoryPosts } from "../../utilities/Posts";
 
 function Profile() {
   const { uid } = useParams();
@@ -59,6 +64,16 @@ function Profile() {
     getUserPosts();
   }, [uid]);
 
+  const [currPosts, setCurrPosts] = React.useState([]);
+  useEffect(() => {
+    async function getPosts(category) {
+      return await getCategoryPosts(category);
+    }
+    getPosts("").then((posts) => {
+      setCurrPosts(posts);
+    });
+  }, []);
+
   // const userData = useContext(AuthContext);
   console.log(posts);
   const username = user ? user.username : "";
@@ -96,6 +111,36 @@ function Profile() {
           ))}
         </Box>
         <Heading size="md">Bought History -</Heading>
+        <Center w="85%">
+          <Grid templateColumns="repeat(3, 1fr)" gap={6} maxW="container.lg">
+            {currPosts &&
+              currPosts.map((post) => (
+                <GridItem
+                  w="400px"
+                  h="400"
+                  color="white"
+                  bg="purple.300"
+                  borderRadius="16"
+                  boxShadow="4px 16px 16px -4px rgb(0 0 0 / 25%);"
+                  p="8"
+                >
+                  <Link class="post" href={`/post/${post.post_id}`}>
+                    <Box overflow="hidden">
+                      <Img src="https://bit.ly/2Z4KKcF" borderRadius="8" />
+                      <Box display="flex" alignItems="baseline">
+                        {" "}
+                        <Box>
+                          <Heading size="xl">{post.title}</Heading>
+                          <Heading size="md">{post.category}</Heading>
+                          <Heading size="md">${post.price}</Heading>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Link>
+                </GridItem>
+              ))}
+          </Grid>
+        </Center>
         <Text>I'M WAITING...</Text>
       </VStack>
     </Container>

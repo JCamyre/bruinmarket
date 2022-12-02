@@ -21,6 +21,22 @@ const getCategoryPosts = async (category) => {
   return posts;
 };
 
+const getUserPosts = async (uid) => {
+  const posts = [];
+
+  let q = firestore.query(
+    firestore.collection(database, "posts"),
+    firestore.where("uid", "==", uid)
+  );
+
+  const docs = await firestore.getDocs(q);
+  docs.forEach((doc) => {
+    posts.push(doc.data());
+  });
+  console.log(posts.toString());
+  return posts;
+};
+
 const updatePostData = async (postID, userID, key, value) => {
   const q = firestore.query(
     firestore.collection(database, "posts"),
