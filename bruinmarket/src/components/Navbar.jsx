@@ -15,24 +15,21 @@ import logout from "../logout";
 import { auth } from "../firebase";
 
 function Navbar() {
+  const [uid, setUid] = useState("");
+  const [username, setUsername] = useState("");
   const userData = React.useContext(AuthContext);
-  const username = userData ? userData.username : "";
-  // const [uid, setUid] = useState("");
-  const uid = userData ? userData.uid : "";
+  //   const username = userData ? userData.username : "";
+  //   // const [uid, setUid] = useState("");
+  //   const uid = userData ? userData.uid : "";
   const [profilePic, setProfilePic] = useState(
     "https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"
   );
-  // const navigate = useNavigate();
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user, user.uid);
-      } else {
-        console.log("FUCK OFF BITCH");
-      }
-    });
-  }, []);
+  if (userData && username === "") {
+    setUsername(userData.username);
+    setUid(userData.uid);
+    console.log(userData);
+  }
 
   return (
     <HStack pl="12" pr="12" bg="purple.300" pt="4" pb="4">
