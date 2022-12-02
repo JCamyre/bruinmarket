@@ -381,7 +381,14 @@ function Post() {
           ) : null}
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
-        <Stars displayOnly={true} uid={post ? post.uid : ""} />
+        <Stars displayOnly={true} />
+
+        {images.map((image) => (
+          <div key={image}>
+            <img src={image} />
+            <p>test</p>
+          </div>
+        ))}
         <VStack>
           <link
             rel="stylesheet"
