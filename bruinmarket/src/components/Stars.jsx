@@ -28,6 +28,7 @@ function Stars({ uid, displayOnly }) {
       var stars;
       querySnapshot.forEach((doc) => {
         docID = doc.id;
+        console.log(doc.id, " => ", doc.data());
         stars = doc.data().rating;
         totalReviews = doc.data().numReviews;
       });
