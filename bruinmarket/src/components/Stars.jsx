@@ -18,7 +18,7 @@ function Stars({ uid, displayOnly }) {
   // const [dataName, setDataName] = useState(null);
 
   // KClYU5vyCx70iXs5MZe5, uid: gZZZwgXlt4NW7ZiZFJQQzKS74T23
-  uid = "gZZZwgXlt4NW7ZiZFJQQzKS74T23";
+  // uid = "gZZZwgXlt4NW7ZiZFJQQzKS74T23";
 
   React.useEffect(() => {
     async function getStars() {

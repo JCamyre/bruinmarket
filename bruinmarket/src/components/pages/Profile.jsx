@@ -94,8 +94,13 @@ function Profile() {
       <VStack spacing="24px" divider={<StackDivider borderColor="gray.200" />}>
         <VStack>
           <Center>
-            <Image borderRadius="full" boxSize="150px" src={"https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"
-} />
+            <Image
+              borderRadius="full"
+              boxSize="150px"
+              src={
+                "https://imgs.search.brave.com/A0m1fQUy6bWorptLSy_breSxZNjg6aWtD_JN0KZXMyM/rs:fit:1200:1200:1/g:ce/aHR0cDovL3N0YXRp/Yy5idXNpbmVzc2lu/c2lkZXIuY29tL2lt/YWdlLzUxZGQ2YjBj/ZWFiOGVhYTIyMzAw/MDAxMy9pbWFnZS5q/cGc"
+              }
+            />
           </Center>
           <Center>
             <Heading>
@@ -104,16 +109,16 @@ function Profile() {
             </Heading>
           </Center>
           <Center>
-            <Stars displayOnly={true} />
+            <Stars uid={user ? user.uid : ""} displayOnly={true} />
           </Center>
         </VStack>
         <VStack>
           <Heading size="md">About</Heading>
           <Text size="sm">Likes to have fun at the beach</Text>
           <Text size="sm">Loves drinking water in large quantities</Text>
-          <Text size='sm'>Contributes to piazza frequently</Text>
-          <Text size='sm'>Still doesn't know Lisp</Text>
-          <Text size='sm'>Has five pairs of Eggert's New Balances</Text>
+          <Text size="sm">Contributes to piazza frequently</Text>
+          <Text size="sm">Still doesn't know Lisp</Text>
+          <Text size="sm">Has five pairs of Eggert's New Balances</Text>
         </VStack>
         <Heading size="md"> Market Listings -</Heading>
         <Center w="50%">
