@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { addUserBid, getBids, getPostData, getUserData } from "../../utilities/Posts"
+import { addUserBid, getBids, getPostData, getUserData, finalizeSale, getBuyer} from "../../utilities/Posts"
 import {
   Container,
   Box,
@@ -11,13 +11,26 @@ import {
   Text,
   Button,
   VStack,
+  HStack,
   Heading,
   Link,
   Spacer,
   Input,
   InputGroup,
-  InputLeftElement
+  InputLeftElement,
+  Grid,
 } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from '@chakra-ui/react'
 import { AuthContext } from "../../App";
 import "./Post.css";
 
@@ -44,6 +57,7 @@ function Post() {
   const [bidStatus, setStatus] = useState("")
   const [currBids, setBids] = useState({})
   const [currBidsUsernames, setUsernames] = useState({})
+  const [soldTo, setSold] = useState(null)
 
   useEffect(() => {
     const updatedPost = post;
@@ -55,20 +69,30 @@ function Post() {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log(id)
-    getBids(id).then(e => setBids(e))
-    console.log(currBids)
+    getBids(id).then(e => {
+      setBids(e)
+    })
     getPostData(id).then(e => setPost(e))
-    let currentBids = {}
-    for (var user in currBids) {
-      getUserData(user).then(e => {
-        const bidderUsername = e.username
-        currentBids[user] = bidderUsername 
-      })
-    }
-    setUsernames(currentBids)
+    getBuyer(id).then(e => {
+      if (id !== null) {
+        setSold(e)
+      }
+    })
   }, [])
   
+  useEffect(() => {
+    if (currBids) {
+      async function getUD() {
+        let currentBids = {}
+        for (var user in currBids) {
+          await getUserData(user).then(ud => {currentBids[user] = ud.username; console.log(currentBids[user])})
+        }
+        console.log("test" + JSON.stringify(currentBids))
+        return currentBids
+      }
+      getUD().then(ud => setUsernames(ud))
+    }
+  }, [currBids])
   // if you are looking at a post that you bought
 
   return (
@@ -120,7 +144,8 @@ function Post() {
           <a href={`profile/${user.uid}`}>
             <Button color="purple.300">View Profile</Button>
           </a>
-          { (user?.uid !== post.uid) ? //if not user who submitted post, give option to submit bid
+          { (user !== {} && post !== {}) ? (user?.uid !== post?.uid) ? //if not user who submitted post, give option to submit bid
+          (!soldTo ?
           <form onSubmit={Submit} method="POST">
             <VStack spacing="2">
               <InputGroup>
@@ -136,23 +161,45 @@ function Post() {
                 />
               </InputGroup>
               
-              <Button type="submit" maxW="sm">
+              <Button type="submit" maxW="sm" >
                 Submit bid
               </Button>
               <Text color="red"> {bidStatus} </Text>
             </VStack>
-          </form>
+          </form> : <Text>{`Already sold to ${currBidsUsernames[soldTo]}`}</Text>)
           : //if user is seller
-            <Box>
-              {(currBids && currBidsUsernames) ? Object.keys(currBids).map(user => {
-                console.log(currBids[user])
+            <TableContainer>
+              <Table>
+              <Thead>
+                <Tr>
+                  <Th>Username</Th>
+                  <Th>Bid price</Th>
+                  <Th>         </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+              {(currBids !== {} && currBidsUsernames !== {}) && Object.keys(currBids).map(user => {
                 return (
-                  <div>
-                  <Text>{`${currBidsUsernames[user]}, ${currBids[user]}`}</Text>
-                  </div>
+                  <Tr>
+                      <Td>{`${currBidsUsernames[user]}`}</Td> 
+                      <Td>{`$${currBids[user].toFixed(2).toString()}`}</Td>
+                      <Td>
+                        {soldTo !== null ? (soldTo === user ?
+                          "Sold \u2713"
+                          : "") :
+                          <Button color="purple.300" onClick={() => {
+                            setSold(user)
+                            console.log(soldTo)
+                            finalizeSale(id, user)}}>Accept bid</Button>
+                        }
+                      </Td>
+                  </Tr>
                 )
-              }): null}
-            </Box>
+              })}
+              </Tbody>
+              </Table>
+            </TableContainer>
+          : null
           }
         </VStack>
         <hr />

@@ -36,6 +36,12 @@ const addUserBid = async (postID, userID, amount) => {
 
 const finalizeSale = async (postID, uid) => {
     await updatePostData(postID, uid, "bought_uid", uid)
+    return uid
+}
+
+const getBuyer = async (postID) => {
+    const postData = await getPostData(postID)
+    return postData.bought_uid
 }
 
 const getBids = async (postID) => {
@@ -84,4 +90,4 @@ async function getUserData(uid) {
     return data;
   }
 
-export {getCategoryPosts, addUserBid, finalizeSale, getBids, getPostData, getUserData};
+export {getCategoryPosts, addUserBid, finalizeSale, getBids, getPostData, getUserData, getBuyer};
