@@ -321,9 +321,7 @@ function Post() {
               <Text color="green">You already own this item</Text>
             )
           ) : (
-            <div></div>
-          )}
-          <TableContainer>
+            <TableContainer>
             <Table>
               <Thead>
                 <Tr>
@@ -371,6 +369,8 @@ function Post() {
               </Tbody>
             </Table>
           </TableContainer>
+          )}
+          
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
         <Stars displayOnly={true} uid={post ? post.uid : ""} />
