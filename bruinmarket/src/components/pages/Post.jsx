@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Icon } from 'leaflet'
-import marker from '../marker.png';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { Icon } from "leaflet";
+import marker from "../marker.png";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -35,10 +35,10 @@ import {
 
 const myIcon = new Icon({
   iconUrl: marker,
-  iconSize: [22,32]
- })
+  iconSize: [22, 32],
+});
 
- function ChangePosition({latitude, longitude}) {
+function ChangePosition({ latitude, longitude }) {
   const map = useMap();
   map.flyTo([latitude, longitude]);
   return null;
@@ -216,10 +216,7 @@ function Post() {
           </a>
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
-<<<<<<< HEAD
         <Stars displayOnly={true} uid={post ? post.uid : ""} />
-=======
-        <Stars displayOnly={true} />
 
         {images.map((image) => (
           <div key={image}>
@@ -228,22 +225,25 @@ function Post() {
           </div>
         ))}
         <VStack>
-        <link
+          <link
             rel="stylesheet"
             href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
             integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
             crossorigin=""
-        />
-        <MapContainer center={[latitude, longitude]} zoom={16}scrollWheelZoom={false}>
-        {<ChangePosition latitude={latitude} longitude={longitude} />}
-        <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <Marker position={[latitude, longitude] } icon={myIcon}/>
-        </MapContainer>
+          />
+          <MapContainer
+            center={[latitude, longitude]}
+            zoom={16}
+            scrollWheelZoom={false}
+          >
+            {<ChangePosition latitude={latitude} longitude={longitude} />}
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={[latitude, longitude]} icon={myIcon} />
+          </MapContainer>
         </VStack>
->>>>>>> origin/newmain
       </Box>
     </Container>
   );
