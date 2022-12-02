@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { addUserBid } from "../../utilities/Posts"
 import {
   Container,
   Box,
@@ -13,6 +14,9 @@ import {
   Heading,
   Link,
   Spacer,
+  Input,
+  InputGroup,
+  InputLeftElement
 } from "@chakra-ui/react";
 import { AuthContext } from "../../App";
 import "./Post.css";
@@ -21,6 +25,17 @@ function Post() {
   const { id } = useParams();
 
   const currentUser = React.useContext(AuthContext);
+
+  async function Submit(e) {
+    e.preventDefault();
+    if (!isNaN(+bid)) {
+      setStatus("Successfully submitted/updated bid");
+      const valueToSubmit = parseFloat(bid)
+      await addUserBid(id, currentUser.uid, valueToSubmit)
+    } else {
+      setStatus("Invalid bid. Please re-enter");
+    }
+  }
 
   // get User based on the Post id
   const [post, setPost] = useState({
@@ -36,6 +51,8 @@ function Post() {
     username: "pandalover69",
     email: "jwcamry03@gmail.com",
   });
+  const [bid, setBid] = useState(null)
+  const [bidStatus, setStatus] = useState("")
 
   useEffect(() => {
     const updatedPost = post;
@@ -45,6 +62,8 @@ function Post() {
     setPost(updatedPost);
   }, [currentUser]);
 
+  const bids = {'user1': 123, 'user2': 42342, 'user3': 422};
+  
   // if you are looking at a post that you bought
 
   return (
@@ -96,7 +115,43 @@ function Post() {
           <a href={`profile/${user.uid}`}>
             <Button color="purple.300">View Profile</Button>
           </a>
+          { (currentUser?.uid !== post.uid) ? //if not user who submitted post, give option to submit bid
+          <form onSubmit={Submit} method="POST">
+            <VStack spacing="2">
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  color='gray.300'
+                  fontSize='1.2em'
+                  children='$'
+                />
+                <Input 
+                  placeholder="Enter a bid"
+                  onChange={e => setBid(e.currentTarget.value)}
+                />
+              </InputGroup>
+              
+              <Button type="submit" maxW="sm">
+                Submit bid
+              </Button>
+              <Text color="red"> {bidStatus} </Text>
+            </VStack>
+          </form>
+          : //if user is seller
+            null
+          }
         </VStack>
+        <Box>
+          {Object.keys(bids).map(user => {
+            console.log(bids[user])
+            return (
+              <div>
+              <Text>test</Text>
+              </div>
+            )
+
+})}
+        </Box>
         {/* https://openbase.com/js/react-star-ratings */}
         <Text>{post.bought_uid}</Text>
         {post.bought_uid && currentUser.uid && (
