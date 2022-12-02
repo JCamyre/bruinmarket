@@ -43,10 +43,10 @@ function Navbar() {
         </Box>
       </a>
       <Spacer />
-      <a href="/createpost">
-        <Text fontSize="xl" pl="4" pr="2" color="white">
+      <a href="/createpost" style={{paddingRight: '16px'}}>
+        <Button fontSize="xl" color="purple.300">
           Create a Post
-        </Text>
+        </Button>
       </a>
       <a
         href={`/profile/${uid}`}
@@ -57,12 +57,16 @@ function Navbar() {
         id="profile"
       >
         <Image borderRadius="full" boxSize="80px" src={profilePic} />
-        <Text fontSize="xl" pl="4" pr="2" color="white">
+        <Box>
+        <Text fontSize="2xl" pl="4" pr="2" color="white">
           {username}
         </Text>
+        </Box>
+
       </a>
       {uid && (
         <Button
+        fontSize="xl" color="purple.300"
           onClick={() => {
             logout();
           }}
@@ -71,8 +75,8 @@ function Navbar() {
         </Button>
       )}
       {!uid && (
-        <a href="/login">
-          <Button>Login</Button>
+        <a href="/login" color='white'>
+          <Button fontSize="xl" color="purple.300">Login</Button>
         </a>
       )}
     </HStack>

@@ -29,7 +29,7 @@ function SideBar({ setCategory }) {
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)} margin="1">
+      <Button onClick={() => setOpen(true)} margin="1" color='purple.300'>
         See Categories
       </Button>
       <Drawer
