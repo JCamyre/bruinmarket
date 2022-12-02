@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import {  ref, getDownloadURL, listAll } from "firebase/storage";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./../../firebase";
 
 import { Carousel } from "react-responsive-carousel";
@@ -30,42 +30,6 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-
-function Post() {
-  const { id } = useParams();
-  console.log(`CurID is ${id}`)
-  useEffect(() => {
-    let tempArr = [];
-    const listRef = ref(storage, id);
-    listAll(listRef)
-    .then((res) => {
-      res.items.forEach((itemRef) => {
-        // All the items under listRef.
-        getDownloadURL(ref(storage, itemRef.fullPath))  
-          .then((url) => {
-          // `url` is the download URL for 'images/stars.jpg'
-          console.log(url)
-          // Or inserted into an <img> element
-
-          // THIS IS JUST <img src={url} />
-          // FDJSALFDJLSKAJFDLSALKFDSAKLFJDSLKAJFDLSAF
-          // FDSAFDSAFDSAFDSAFDSAFDSAFSS
-          const img = document.getElementById('myimg');
-          img.setAttribute('src', url);
-        })
-        .catch((error) => {
-          // Handle any errors
-          console.log("didnt work")
-        });  
-  
-      });
-    }).catch((error) => {
-      // Uh-oh, an error occurred!
-      console.log("messed up")
-    });
-    console.log(tempArr.length)
-  }, [])
-
 function Post() {
   const { postId } = useParams();
   const currentUser = React.useContext(AuthContext);
@@ -80,10 +44,49 @@ function Post() {
   });
   const [user, setUser] = useState(null);
 
+  const [images, setImages] = useState([]);
+
   if (currentUser && !user) {
-    console.log(currentUser);
     setUser(currentUser);
   }
+
+  console.log(`CurID is ${postId}`);
+  useEffect(() => {
+    let tempArr = [];
+    const listRef = ref(storage, postId);
+    listAll(listRef)
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          // All the items under listRef.
+          getDownloadURL(ref(storage, itemRef.fullPath))
+            .then((url) => {
+              // `url` is the download URL for 'images/stars.jpg'
+              console.log(url);
+              tempArr.push(url);
+              // Or inserted into an <img> element
+
+              // THIS IS JUST <img src={url} />
+              // FDJSALFDJLSKAJFDLSALKFDSAKLFJDSLKAJFDLSAF
+              // FDSAFDSAFDSAFDSAFDSAFDSAFSS
+              // const img = document.getElementById("myimg");
+              // img.setAttribute("src", url);
+            })
+            .catch((error) => {
+              // Handle any errors
+              console.log("didnt work");
+            });
+        });
+      })
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+        console.log("messed up");
+      });
+    console.log("Temp array: ", tempArr);
+
+    setImages(tempArr);
+  }, []);
+
+  console.log(images);
 
   useEffect(() => {
     async function fetchPostInfo(postId) {
@@ -169,8 +172,14 @@ function Post() {
           </a>
         </VStack>
         {/* https://openbase.com/js/react-star-ratings */}
-        {}
         <Stars displayOnly={true} />
+
+        {images.map((image) => (
+          <div key={image}>
+            <img src={image} />
+            <p>test</p>
+          </div>
+        ))}
       </Box>
     </Container>
   );
