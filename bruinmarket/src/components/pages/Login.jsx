@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Button, Container, Input, Stack, Link, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Container,
+  Input,
+  Stack,
+  Link,
+  Text,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import login from "../../login";
 
@@ -7,6 +16,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setStatus] = useState(5);
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClick = () => setShowPassword(!showPassword);
 
   const navigate = useNavigate();
 
@@ -52,10 +63,18 @@ function Login() {
               placeholder="email"
               onChange={(e) => setEmail(e.currentTarget.value)}
             />
-            <Input
-              placeholder="password"
-              onChange={(e) => setPassword(e.currentTarget.value)}
-            />
+            <InputGroup size="md">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="password"
+                onChange={(e) => setPassword(e.currentTarget.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={handleClick}>
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             <Link href="/">
               <Button type="submit">Sign in</Button>
             </Link>
