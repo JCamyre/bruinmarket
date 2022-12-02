@@ -24,7 +24,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { stringify } from "@firebase/util";
 import Stars from "../Stars";
-import { getCategoryPosts } from "../../utilities/Posts";
+import { getUserPosts } from "../../utilities/Posts";
 
 function Profile() {
   const { uid } = useParams();
@@ -32,6 +32,7 @@ function Profile() {
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     async function getUser() {
       const query = await firestore.query(
@@ -66,10 +67,10 @@ function Profile() {
 
   const [currPosts, setCurrPosts] = React.useState([]);
   useEffect(() => {
-    async function getPosts(category) {
-      return await getCategoryPosts(category);
+    async function getPosts(uid) {
+      return await getUserPosts(uid);
     }
-    getPosts("").then((posts) => {
+    getPosts(uid).then((posts) => {
       setCurrPosts(posts);
     });
   }, []);
