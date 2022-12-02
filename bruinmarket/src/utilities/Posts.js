@@ -37,6 +37,22 @@ const getUserPosts = async (uid) => {
   return posts;
 };
 
+const getUserBoughtPosts = async (uid) => {
+  const posts = [];
+
+  let q = firestore.query(
+    firestore.collection(database, "posts"),
+    firestore.where("bought_uid", "==", uid)
+  );
+
+  const docs = await firestore.getDocs(q);
+  docs.forEach((doc) => {
+    posts.push(doc.data());
+  });
+  console.log(posts.toString());
+  return posts;
+};
+
 const updatePostData = async (postID, userID, key, value) => {
   const q = firestore.query(
     firestore.collection(database, "posts"),
@@ -123,4 +139,5 @@ export {
   getUserData,
   getBuyer,
   getUserPosts,
+  getUserBoughtPosts,
 };
