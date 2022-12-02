@@ -43,11 +43,13 @@ function Navbar() {
         </Box>
       </a>
       <Spacer />
-      <a href="/createpost" style={{paddingRight: '16px'}}>
+      {uid && (
+        <a href="/createpost" style={{paddingRight: '16px'}}>
         <Button fontSize="xl" color="purple.300">
           Create a Post
         </Button>
       </a>
+      )}
       <a
         href={`/profile/${uid}`}
         style={{

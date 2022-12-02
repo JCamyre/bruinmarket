@@ -31,7 +31,7 @@ function SideBar({ setCategory }) {
     <div>
       <Button onClick={() => setOpen(true)} margin="1" color='purple.300'>
         See Categories
-      </Button>
+      </Button>   
       <Drawer
         isOpen={currOpen}
         onClose={() => setOpen(false)}
