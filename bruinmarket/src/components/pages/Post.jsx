@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import {  ref, getDownloadURL, listAll } from "firebase/storage";
+import { storage } from "./../../firebase";
+
 import { Carousel } from "react-responsive-carousel";
 import {
   Container,
@@ -19,6 +22,38 @@ import "./Post.css";
 
 function Post() {
   const { id } = useParams();
+  console.log(`CurID is ${id}`)
+  useEffect(() => {
+    let tempArr = [];
+    const listRef = ref(storage, id);
+    listAll(listRef)
+    .then((res) => {
+      res.items.forEach((itemRef) => {
+        // All the items under listRef.
+        getDownloadURL(ref(storage, itemRef.fullPath))  
+          .then((url) => {
+          // `url` is the download URL for 'images/stars.jpg'
+          console.log(url)
+          // Or inserted into an <img> element
+
+          // THIS IS JUST <img src={url} />
+          // FDJSALFDJLSKAJFDLSALKFDSAKLFJDSLKAJFDLSAF
+          // FDSAFDSAFDSAFDSAFDSAFDSAFSS
+          const img = document.getElementById('myimg');
+          img.setAttribute('src', url);
+        })
+        .catch((error) => {
+          // Handle any errors
+          console.log("didnt work")
+        });  
+  
+      });
+    }).catch((error) => {
+      // Uh-oh, an error occurred!
+      console.log("messed up")
+    });
+    console.log(tempArr.length)
+  }, [])
 
   const currentUser = React.useContext(AuthContext);
 
