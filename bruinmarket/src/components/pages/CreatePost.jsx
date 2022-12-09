@@ -2,6 +2,8 @@ import {
   Container,
   Stack,
   Input,
+  InputGroup,
+  InputLeftElement,
   Link,
   Button,
   FormControl,
@@ -12,39 +14,49 @@ import {
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { storage } from './../../firebase';
+import { AuthContext } from '../../App';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import {db} from "./../../firebase"
-import { getFireStore, collection, addDoc } from "firebase/firestore"; 
-
+import {database} from "./../../firebase";
+import {collection, addDoc, getDocs} from "firebase/firestore"; 
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [category, setCategory] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
+  const format = (val) => `$` + val
+  const parse = (val) => val.replace(/^\$/, '')
+
+  const [price, setPrice] = React.useState('5.50')
 
   const navigate = useNavigate();
-
-  function Submit(e) {
+  const userData = React.useContext(AuthContext);
+  async function Submit(e) {
     e.preventDefault();
+    console.log();
     // need to redirect to / page
     console.log(`Title: ${title}, Summary: ${summary}, Category: ${category}`);
 
     // Maybe we'll add a check to check for duplicate posts, but for now, just push to the Post table
     // WE NEED TO ADD A DATABASE CALL THAT RETURNS THE ID OF THE CURRENT USER LOGGED IN
-
+    if(userData == null){
+      console.log("UserData is null u messed up")
+    }
+    if(summary == "" || title == "" || category == ""){
+      return;
+    }
+    const docRef = await addDoc(collection(database, "posts"), {
+      uid: userData.uid,
+      title: title,
+      summary: summary,
+      category: category,
+      price: price
+    });
+    
     // database.post(user_id, title, summary, category)
-    db.collection("cities").add({
-      name: "Tokyo",
-      country: "Japan"
-    })
-    .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id);
-   })
-    .catch((error) => {
-      console.error("Error adding document: ", error);
-   });
-      uploadPicture(e.currentTarget.files)
+    console.log(e.target)
+    uploadPicture(e.target[4].files, docRef.id)
 
     // pictures we will figure out.
 
@@ -57,7 +69,7 @@ function CreatePost() {
   }
 
   // img should be a file
-  function uploadPicture(imgs) {
+  function uploadPicture(imgs, post_id) {
     const imgsArr = [...imgs];
 
     imgsArr.forEach((img, i) => {
@@ -65,7 +77,7 @@ function CreatePost() {
       // POSTID + _ + PICTURE NUMBER (use the i variable for PICTURE NUMBER)
       const file = img;
       if (!file) return;
-      const storageRef = ref(storage, `files/${file.name}`);
+      const storageRef = ref(storage, `${post_id}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
   
       uploadTask.on("state_changed",
@@ -111,6 +123,20 @@ function CreatePost() {
               <option>Books</option>
             </Select>
           </FormControl>
+          
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents='none'
+              color='gray.300'
+              fontSize='1.2em'
+              children='$'
+            />
+            <Input 
+              placeholder="Enter price"
+              onChange={(e) => setPrice(e.currentTarget.value)}
+            />
+          </InputGroup>
+      
           <Input
             type="file"
             placeholder="filename"
